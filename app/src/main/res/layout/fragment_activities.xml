@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvItems"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
+            app:layout_constraintEnd_toEndOf="@+id/relativeLayout"
+            app:layout_constraintStart_toStartOf="@+id/relativeLayout"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchorGravity="end|bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <jahirfiquitiva.libs.fabsmenu.FABsMenuLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                app:fabs_menu_clickableOverlay="true"
+                app:fabs_menu_overlayColor="#4d000000"
+                tools:layout_behavior="@string/fabs_menu_layout_behavior">
+
+                <jahirfiquitiva.libs.fabsmenu.FABsMenu
+                    android:id="@+id/fabs_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="bottom|end"
+                    app:fab_expandDirection="up"
+                    app:fab_labelsPosition="left"
+                    app:fab_menuMargins="16dp"
+                    app:fab_moreButtonBackgroundColor="@color/fb"
+                    app:fab_moreButtonPlusIcon="@drawable/applogo"
+                    app:fab_moreButtonRippleColor="@color/pink"
+                    app:fab_moreButtonSize="normal">
+
+                    <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                        android:id="@+id/addStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="@color/colorBlue"
+                        app:fabSize="mini"
+                        app:fab_enableTitleClick="true"
+                        app:fab_title="Add status"
+                        app:fab_title_backgroundColor="@color/colorBlue"
+                        app:fab_title_textColor="@android:color/white"
+                        app:srcCompat="@drawable/ic_add_black_24dp" />
+
+                    <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                        android:id="@+id/addItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="@color/black"
+                        app:fabSize="mini"
+                        app:fab_enableTitleClick="true"
+                        app:fab_title="Add design or style"
+                        app:fab_title_backgroundColor="@color/black"
+                        app:fab_title_textColor="@color/white"
+                        app:srcCompat="@drawable/ic_photo_cam" />
+
+
+                </jahirfiquitiva.libs.fabsmenu.FABsMenu>
+
+            </jahirfiquitiva.libs.fabsmenu.FABsMenuLayout>
+
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
