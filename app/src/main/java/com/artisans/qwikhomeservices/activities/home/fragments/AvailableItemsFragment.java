@@ -17,61 +17,49 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.artisans.qwikhomeservices.R;
 import com.artisans.qwikhomeservices.activities.home.MainActivity;
 import com.artisans.qwikhomeservices.adapters.StylesAdapter;
-import com.artisans.qwikhomeservices.databinding.FragmentAccountBinding;
+import com.artisans.qwikhomeservices.databinding.FragmentAvailableItemsBinding;
 import com.artisans.qwikhomeservices.models.StylesItemModel;
+import com.artisans.qwikhomeservices.utils.DisplayViewUI;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import java.util.Objects;
 
-
-public class AccountFragment extends Fragment {
-    private FragmentAccountBinding accountBinding;
+public class AvailableItemsFragment extends Fragment {
+    private FragmentAvailableItemsBinding fragmentAvailableItemsBinding;
     private DatabaseReference databaseReference;
     private StylesAdapter adapter;
     //private AllBarbersAdapter adapter;
 
-    public AccountFragment() {
+    public AvailableItemsFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        accountBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_account, container, false);
-        return accountBinding.getRoot();
+        fragmentAvailableItemsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_available_items, container, false);
+        return fragmentAvailableItemsBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-        RecyclerView rv = accountBinding.rvbb;
+        RecyclerView rv = fragmentAvailableItemsBinding.rvbb;
         rv.setHasFixedSize(true);
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Styles").child(MainActivity.uid);
-        /*// TODO: 18-Apr-20 change dbref
-        databaseReference = FirebaseDatabase.getInstance().getReference()
-                .child("Services").child("ServiceType");*/
-
         databaseReference.keepSynced(true);
-
-        /*//querying the database BY NAME
-       // Query query = databaseReference.orderByChild("accountType").equalTo("Barbers");
-*/
         Query query = databaseReference.orderByChild("price");
         FirebaseRecyclerOptions<StylesItemModel> options =
                 new FirebaseRecyclerOptions.Builder<StylesItemModel>().setQuery(query,
                         StylesItemModel.class)
                         .build();
 
-        if (Objects.requireNonNull(getActivity()).getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             rv.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
-        } else if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+        } else if (requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             rv.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         }
@@ -79,6 +67,13 @@ public class AccountFragment extends Fragment {
 
         adapter = new StylesAdapter(options);
         rv.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new StylesAdapter.onItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                DisplayViewUI.displayToast(getActivity(), " Item " + position + " edit");
+            }
+        });
 
 
     }

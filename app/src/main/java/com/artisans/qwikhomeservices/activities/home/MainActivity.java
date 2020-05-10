@@ -384,9 +384,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpAppBarConfig() {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_activities, R.id.navigation_home,
-                R.id.navigation_styles, R.id.navigation_request)
-                .build();
+                R.id.navigation_styles,
+                R.id.navigation_activities,
+                R.id.navigation_request).build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 

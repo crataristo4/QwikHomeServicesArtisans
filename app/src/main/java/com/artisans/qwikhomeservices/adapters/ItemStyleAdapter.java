@@ -106,7 +106,7 @@ public class ItemStyleAdapter extends RecyclerView.Adapter<ItemStyleAdapter.Item
 
                 int adapterPosition = itemStyleAdapterViewHolder.getAdapterPosition();
                 String price = String.valueOf(stylesItemModel.getPrice());
-                String itemStyleName = String.valueOf(stylesItemModel.getStyleItem());
+                String itemStyleName = String.valueOf(stylesItemModel.getItemDescription());
                 String itemImage = String.valueOf(stylesItemModel.getItemImage());
 
 

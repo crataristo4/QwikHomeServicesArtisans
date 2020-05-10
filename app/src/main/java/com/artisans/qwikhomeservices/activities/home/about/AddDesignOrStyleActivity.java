@@ -12,31 +12,35 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import com.artisans.qwikhomeservices.R;
 import com.artisans.qwikhomeservices.activities.home.MainActivity;
 import com.artisans.qwikhomeservices.databinding.ActivityDesignStyleBinding;
-import com.artisans.qwikhomeservices.models.StylesItemModel;
 import com.artisans.qwikhomeservices.utils.DisplayViewUI;
+import com.artisans.qwikhomeservices.utils.GetTimeAgo;
 import com.artisans.qwikhomeservices.utils.MyConstants;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class AddDesignOrStyleActivity extends AppCompatActivity {
 
     private static final String TAG = "JobTypesActivity";
-    String dateTime;
+    private String dateTime;
     private ActivityDesignStyleBinding activityDesignStyleBinding;
     private AppCompatImageView styleItemPhoto;
     private TextInputLayout txtStyleName, txtPrice;
@@ -46,6 +50,8 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
     private String price;
     private String uid, style, getImageUploadUri, accountType, userImage, userName;
     private long mBackPressed;
+    private CollectionReference dbReference = FirebaseFirestore.getInstance().collection("Activity");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,10 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         activityDesignStyleBinding = DataBindingUtil.setContentView(this, R.layout.activity_design_style);
+        Toolbar toolbar = activityDesignStyleBinding.toolbar;
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
         mStorageReference = FirebaseStorage.getInstance().getReference("photos");
         serviceTypeDbRef = FirebaseDatabase.getInstance()
                 .getReference("Styles");
@@ -135,8 +145,7 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
             ProgressDialog progressDialog = DisplayViewUI.displayProgress(this, "adding item please wait...");
             progressDialog.show();
 
-
-            //                file path for the itemImage
+            // file path for the itemImage
             final StorageReference fileReference = mStorageReference.child(uid + "." + uri.getLastPathSegment());
 
             fileReference.putFile(uri).continueWithTask(task -> {
@@ -152,10 +161,43 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
 
                     Uri downLoadUri = task.getResult();
                     assert downLoadUri != null;
-
                     getImageUploadUri = downLoadUri.toString();
 
-                    StylesItemModel itemModel = new StylesItemModel(price,
+                    Map<String, Object> itemsMap = new HashMap<>();
+                    itemsMap.put("price", price);
+                    itemsMap.put("itemDescription", style);
+                    itemsMap.put("itemImage", getImageUploadUri);
+                    itemsMap.put("userPhoto", userImage);
+                    itemsMap.put("userName", userName);
+                    itemsMap.put("timeStamp", GetTimeAgo.getTimeInMillis());
+                    itemsMap.put("accountType", accountType);
+
+                    String randomUID = serviceTypeDbRef.push().getKey();
+                    assert randomUID != null;
+
+                    //fire store cloud store
+                    dbReference.add(itemsMap).addOnCompleteListener(task2 -> {
+
+                        if (task2.isSuccessful()) {
+                            serviceTypeDbRef.child(uid).child(randomUID).setValue(itemsMap);
+
+                            progressDialog.dismiss();
+                            DisplayViewUI.displayToast(this, "Successful");
+
+                            startActivity(new Intent(AddDesignOrStyleActivity.this, MainActivity.class)
+                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                            finish();
+
+
+                        } else {
+                            progressDialog.dismiss();
+                            DisplayViewUI.displayToast(this, Objects.requireNonNull(task2.getException()).getMessage());
+
+                        }
+
+                    });
+
+                    /*  StylesItemModel itemModel = new StylesItemModel(price,
                             style,
                             getImageUploadUri,
                             userImage,
@@ -186,7 +228,7 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
                         }
 
                     });
-
+*/
                 } else {
                     progressDialog.dismiss();
                     DisplayViewUI.displayToast(this, Objects.requireNonNull(task.getException()).getMessage());
@@ -234,12 +276,10 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
         } else {
             DisplayViewUI.displayToast(this, "Press back again to exit");
 
-
         }
 
         mBackPressed = System.currentTimeMillis();
     }
-
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {

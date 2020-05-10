@@ -71,19 +71,38 @@ public class AddStatusToFireStore extends BottomSheetDialogFragment {
         if (!getInputFromUser.trim().isEmpty()) {
             loading.setVisibility(View.VISIBLE);
 
-            //post status
-            Map<String, Object> statusObjectMap = new HashMap<>();
-            statusObjectMap.put("timeStamp", GetTimeAgo.getTimeInMillis());
-            statusObjectMap.put("userName", getName);
-            statusObjectMap.put("status", getInputFromUser);
-            statusObjectMap.put("userPhoto", getPhotoUrl);
+            requireActivity().runOnUiThread(() -> {
 
-            /*String dbNodeId = dbStatus.push().getKey();
+                //post status
+                Map<String, Object> statusObjectMap = new HashMap<>();
+                statusObjectMap.put("timeStamp", GetTimeAgo.getTimeInMillis());
+                statusObjectMap.put("userName", getName);
+                statusObjectMap.put("status", getInputFromUser);
+                statusObjectMap.put("userPhoto", getPhotoUrl);
 
-            //insert into db ... firebase realtime database
-            dbStatus.child(Objects.requireNonNull(dbNodeId)).setValue(statusObjectMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
+        /*String dbNodeId = dbStatus.push().getKey();
+
+        //insert into db ... firebase realtime database
+        dbStatus.child(Objects.requireNonNull(dbNodeId)).setValue(statusObjectMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if (task.isSuccessful()) {
+                    dismiss();
+                    loading.setVisibility(View.GONE);
+                    txtStatus.getEditText().getText().clear();
+                    DisplayViewUI.displayToast(requireActivity(), "Successful");
+                } else {
+                    loading.setVisibility(View.GONE);
+                    DisplayViewUI.displayToast(requireActivity(), Objects.requireNonNull(task.getException()).getMessage());
+                }
+
+            }
+        });
+*/
+
+                //fire store cloud store
+                dbReference.add(statusObjectMap).addOnCompleteListener(task -> {
 
                     if (task.isSuccessful()) {
                         dismiss();
@@ -95,22 +114,7 @@ public class AddStatusToFireStore extends BottomSheetDialogFragment {
                         DisplayViewUI.displayToast(requireActivity(), Objects.requireNonNull(task.getException()).getMessage());
                     }
 
-                }
-            });
-*/
-
-            //fire store cloud store
-            dbReference.add(statusObjectMap).addOnCompleteListener(task -> {
-
-                if (task.isSuccessful()) {
-                    dismiss();
-                    loading.setVisibility(View.GONE);
-                    txtStatus.getEditText().getText().clear();
-                    DisplayViewUI.displayToast(requireActivity(), "Successful");
-                } else {
-                    loading.setVisibility(View.GONE);
-                    DisplayViewUI.displayToast(requireActivity(), Objects.requireNonNull(task.getException()).getMessage());
-                }
+                });
 
             });
 

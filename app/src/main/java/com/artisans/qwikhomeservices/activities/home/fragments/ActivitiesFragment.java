@@ -143,7 +143,7 @@ public class ActivitiesFragment extends Fragment {
 
                     ActivityItemModel itemModel = ds.toObject(ActivityItemModel.class);
 
-                    //group data b status
+                    //group data by status
                     if (ds.getData().containsKey("status")) {
                         Log.i(TAG, "status: " + ds.getData().get("status"));
 

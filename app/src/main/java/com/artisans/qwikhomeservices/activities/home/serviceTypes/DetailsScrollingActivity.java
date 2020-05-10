@@ -181,7 +181,7 @@ public class DetailsScrollingActivity extends AppCompatActivity {
         //on item click
         adapter.setOnItemClickListener((view, position) -> {
             String price = String.valueOf(adapter.getItem(position).getPrice());
-            String itemStyleName = String.valueOf(adapter.getItem(position).getStyleItem());
+            String itemStyleName = String.valueOf(adapter.getItem(position).getItemDescription());
             String imageItem = String.valueOf(adapter.getItem(position).getItemImage());
 
             //scroll app bar to state collapsed when item is clicked
