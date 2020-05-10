@@ -1,5 +1,6 @@
 package com.artisans.qwikhomeservices.adapters;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.artisans.qwikhomeservices.R;
+import com.artisans.qwikhomeservices.activities.ChatActivity;
 import com.artisans.qwikhomeservices.activities.home.bottomsheets.AcceptOrRejectBtSheet;
 import com.artisans.qwikhomeservices.databinding.LayoutRequestReceivedBinding;
 import com.artisans.qwikhomeservices.models.RequestModel;
@@ -35,7 +37,30 @@ public class RequestReceivedAdapter extends FirebaseRecyclerAdapter<RequestModel
 
         requestReceivedAdapterViewHolder.layoutRequestReceivedBinding.setRequest(requestModel);
         requestReceivedAdapterViewHolder.showWorkDoneStatus(requestModel.isWorkDone());
+        requestReceivedAdapterViewHolder.showResponse(requestModel.getResponse());
         requestReceivedAdapterViewHolder.showRating(requestModel.getRating());
+
+        //check if request is accepted and allow service user to chat with user
+        if (requestModel.getResponse().equals("Request Accepted")) {
+
+            requestReceivedAdapterViewHolder.btnChat.setVisibility(View.VISIBLE);
+            requestReceivedAdapterViewHolder.btnChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    requestReceivedAdapterViewHolder
+                            .layoutRequestReceivedBinding
+                            .getRoot()
+                            .getContext()
+                            .startActivity(new Intent(requestReceivedAdapterViewHolder.
+                                    layoutRequestReceivedBinding.
+                                    getRoot().getContext(), ChatActivity.class));
+                }
+            });
+        } else {
+            requestReceivedAdapterViewHolder.btnChat.setVisibility(View.GONE);
+
+        }
 
 
         final String getAdapterPosition = getRef(i).getKey();
@@ -70,7 +95,7 @@ public class RequestReceivedAdapter extends FirebaseRecyclerAdapter<RequestModel
 
         private ImageButton btnView, btnChat, btnRate;
         private RatingBar ratingBar;
-        private TextView txtWorkDone;
+        private TextView txtWorkDone, txtResponse;
 
         private LayoutRequestReceivedBinding layoutRequestReceivedBinding;
 
@@ -80,8 +105,8 @@ public class RequestReceivedAdapter extends FirebaseRecyclerAdapter<RequestModel
             btnView = layoutRequestReceivedBinding.btnView;
             btnChat = layoutRequestReceivedBinding.btnChat;
             ratingBar = layoutRequestReceivedBinding.ratedResults;
-            btnRate = layoutRequestReceivedBinding.btnRateServicePerson;
             txtWorkDone = layoutRequestReceivedBinding.txtConfirmWorkDone;
+            txtResponse = layoutRequestReceivedBinding.txtResponse;
         }
 
         //display the rating
@@ -99,7 +124,7 @@ public class RequestReceivedAdapter extends FirebaseRecyclerAdapter<RequestModel
 
         void showWorkDoneStatus(String isWorkDone) {
             if (isWorkDone.equals("YES")) {
-
+                // btnChat.setVisibility(View.VISIBLE);
                 txtWorkDone.setTextColor(layoutRequestReceivedBinding.getRoot().getResources().getColor(R.color.colorGreen));
                 txtWorkDone.setText(R.string.wkDone);
                 txtWorkDone.setVisibility(View.VISIBLE);
@@ -109,11 +134,36 @@ public class RequestReceivedAdapter extends FirebaseRecyclerAdapter<RequestModel
                 txtWorkDone.setText(R.string.wkNtDone);
                 txtWorkDone.setVisibility(View.VISIBLE);
                 txtWorkDone.setTextColor(layoutRequestReceivedBinding.getRoot().getResources().getColor(R.color.colorRed));
-
+                //btnChat.setVisibility(View.GONE);
 
             }
 
         }
+
+        //display the response details
+        void showResponse(String response) {
+
+            //allow service person to chat user when request is accepted
+            if (response.equals("Request Accepted")) {
+                btnChat.setVisibility(View.VISIBLE);
+                txtResponse.setTextColor(layoutRequestReceivedBinding.getRoot().getResources().getColor(R.color.colorGreen));
+                txtResponse.setText(response);
+
+
+            }
+            if (response.equals("Request Rejected")) {
+                btnChat.setVisibility(View.GONE);
+                txtWorkDone.setText(R.string.wkNtDone);
+                txtWorkDone.setVisibility(View.VISIBLE);
+                txtWorkDone.setTextColor(layoutRequestReceivedBinding.getRoot().getResources().getColor(R.color.colorRed));
+                txtResponse.setTextColor(layoutRequestReceivedBinding.getRoot().getResources().getColor(R.color.colorRed));
+                txtResponse.setText(response);
+
+            }
+
+
+        }
+
 
 
     }

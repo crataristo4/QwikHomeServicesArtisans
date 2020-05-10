@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.artisans.qwikhomeservices.activities.customeractivity.ChatActivity">
+    tools:context="com.artisans.qwikhomeservices.activities.ChatActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/chatToolBar"

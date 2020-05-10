@@ -1,4 +1,4 @@
-package com.artisans.qwikhomeservices.activities.customeractivity;
+package com.artisans.qwikhomeservices.activities;
 
 import android.os.Bundle;
 import android.view.Gravity;

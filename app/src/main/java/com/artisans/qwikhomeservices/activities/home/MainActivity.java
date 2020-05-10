@@ -33,10 +33,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.artisans.qwikhomeservices.R;
-import com.artisans.qwikhomeservices.activities.home.about.AddDesignOrStyleActivity;
 import com.artisans.qwikhomeservices.activities.home.about.SettingsActivity;
 import com.artisans.qwikhomeservices.activities.home.bottomsheets.WelcomeNoticeBottomSheet;
-import com.artisans.qwikhomeservices.activities.home.serviceTypes.TestAcceptOrRejectActivity;
 import com.artisans.qwikhomeservices.activities.welcome.SplashScreenActivity;
 import com.artisans.qwikhomeservices.databinding.ActivityMainBinding;
 import com.artisans.qwikhomeservices.utils.DisplayViewUI;
@@ -352,34 +350,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent gotoSettingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(gotoSettingsIntent);
+        if (item.getItemId() == R.id.action_settings) {
 
-                return true;
-
-            case R.id.action_addStyles:
-                Intent intent = new Intent(MainActivity.this, AddDesignOrStyleActivity.class);
-                intent.putExtra("name", fullName);
-                intent.putExtra("image", imageUrl);
-                intent.putExtra("serviceType", serviceType);
-                startActivity(intent);
-                break;
-
-            /*case R.id.action_viewAllStyles:
-                startActivity(new Intent(MainActivity.this, TestPaginatioinActivity.class));
-                */
-
-            case R.id.action_viewAllRequests:
-                startActivity(new Intent(MainActivity.this, TestAcceptOrRejectActivity.class));
-
-
-            default:
-                return super.onOptionsItemSelected(item);
+            Intent gotoSettingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(gotoSettingsIntent);
+            return true;
 
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void setUpAppBarConfig() {

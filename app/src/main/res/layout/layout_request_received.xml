@@ -48,7 +48,6 @@
                 android:layout_marginRight="8dp"
                 android:text="@{@string/requestRc(request.senderName)}"
                 android:textColor="@color/purple"
-                app:layout_constraintEnd_toStartOf="@+id/btnRateServicePerson"
                 app:layout_constraintStart_toEndOf="@+id/imgItemPhoto"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -86,7 +85,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@{request.response}"
                 android:textColor="#F44336"
                 app:layout_constraintBottom_toBottomOf="@+id/textView10"
                 app:layout_constraintEnd_toStartOf="@+id/ratedResults"
@@ -119,25 +117,11 @@
                 android:layout_marginRight="8dp"
                 android:background="@color/white"
                 android:contentDescription="@string/app_name"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnView"
                 app:srcCompat="@drawable/ic_messageblue" />
 
-            <ImageButton
-                android:id="@+id/btnRateServicePerson"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@color/white"
-                android:contentDescription="@string/app_name"
-                android:scaleType="centerCrop"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/btnView"
-                app:layout_constraintEnd_toStartOf="@+id/btnView"
-                app:layout_constraintTop_toTopOf="@+id/btnView"
-                app:srcCompat="@drawable/handshake" />
 
             <ImageButton
                 android:id="@+id/imgBtnRouteOnMap"

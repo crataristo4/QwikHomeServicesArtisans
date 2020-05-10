@@ -18,7 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.artisans.qwikhomeservices.R;
-import com.artisans.qwikhomeservices.activities.customeractivity.ChatActivity;
+import com.artisans.qwikhomeservices.activities.ChatActivity;
 import com.artisans.qwikhomeservices.activities.customeractivity.RatingActivity;
 import com.artisans.qwikhomeservices.activities.customeractivity.ShowRouteActivity;
 import com.artisans.qwikhomeservices.models.ServicePerson;

@@ -69,7 +69,6 @@
         <activity
             android:name=".activities.home.MainActivity"
             android:alwaysRetainTaskState="true"
-            android:configChanges="screenSize|orientation"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -108,7 +107,7 @@
             android:excludeFromRecents="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.customeractivity.ChatActivity"
+            android:name=".activities.ChatActivity"
             android:configChanges="screenSize|orientation"
             android:parentActivityName=".activities.handymanactivity.RequestHandyManActivity"
             android:theme="@style/AppTheme.NoActionBar" />
