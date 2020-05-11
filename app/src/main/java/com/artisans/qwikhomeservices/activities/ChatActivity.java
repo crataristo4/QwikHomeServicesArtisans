@@ -3,14 +3,12 @@ package com.artisans.qwikhomeservices.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,6 +39,8 @@ public class ChatActivity extends AppCompatActivity {
     private CircleImageView handyManPhoto;
     private TextView txtName, txtContent;
     private TextInputLayout edtComment;
+    private LinearLayoutManager layoutManager;
+    private RecyclerView recyclerView;
     // private ChatAdapter adapter;
     private MessageAdapter adapter;
     private List<Message> messageList;
@@ -99,34 +99,36 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void setUpRecycler() {
-        final RecyclerView recyclerView = findViewById(R.id.recyclerViewChats);
-        recyclerView.setVisibility(View.VISIBLE);
+
+        recyclerView = findViewById(R.id.recyclerViewChats);
+        layoutManager = new LinearLayoutManager(this);
+
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MessageAdapter(messageList);
+        recyclerView.setAdapter(adapter);
 
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
 
         DatabaseReference postChatsDbRef = chatsDbRef.child("Chats");
         chatsDbRef.keepSynced(true);
 
         //querying the database base of the time posted
-        Query query = postChatsDbRef.orderByChild("timeStamp");
-
+        Query query = postChatsDbRef.orderByChild("messageDateTime");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    messageList.clear();
+
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
                         Message message = ds.getValue(Message.class);
                         messageList.add(message);
                     }
-                    adapter.notifyDataSetChanged();
                 }
+
+                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -134,6 +136,7 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
+
 
        /* FirebaseRecyclerOptions<Chat> options = new FirebaseRecyclerOptions.Builder<Chat>().
                 setQuery(query, Chat.class).build();
@@ -146,43 +149,44 @@ public class ChatActivity extends AppCompatActivity {
 
     private void addChat() {
 
-        String postChat = edtComment.getEditText().getText().toString();
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM HH:mm");
+        runOnUiThread(() -> {
+            String postChat = edtComment.getEditText().getText().toString();
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM HH:mm");
 
-        String dateTime = simpleDateFormat.format(calendar.getTime());
+            String dateTime = simpleDateFormat.format(calendar.getTime());
 
-        if (!postChat.isEmpty()) {
-            HashMap<String, Object> chats = new HashMap<>();
-            chats.put("message", postChat);
-            chats.put("senderId", MainActivity.uid);
-            chats.put("senderName", servicePersonName);
-            chats.put("senderPhoto", MainActivity.imageUrl);
-            chats.put("messageDateTime", dateTime);
-            chats.put("receiverName", senderName);
-            chats.put("receiverId", userId);
-
-
-            String chatId = chatsDbRef.push().getKey();
-            assert chatId != null;
-
-            chatsDbRef.child("Chats").child(chatId).setValue(chats).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    makeToast("Successfully sent");
-                    edtComment.getEditText().setText("");
-                }
-
-                // setUpRecycler();
+            if (!postChat.isEmpty()) {
+                HashMap<String, Object> chats = new HashMap<>();
+                chats.put("message", postChat);
+                chats.put("senderId", MainActivity.uid);
+                chats.put("senderName", servicePersonName);
+                chats.put("senderPhoto", MainActivity.imageUrl);
+                chats.put("messageDateTime", dateTime);
+                chats.put("receiverName", senderName);
+                chats.put("receiverId", userId);
 
 
-            }).addOnFailureListener(e -> {
-                makeToast("Error: " + e.getMessage());
-                //edtComment.getEditText().setText("");
-            });
-        } else {
-            edtComment.setError("Cannot send empty message");
-            //  makeToast("Comment cannot be empty");
-        }
+                String chatId = chatsDbRef.push().getKey();
+                assert chatId != null;
+
+                chatsDbRef.child("Chats").child(chatId).setValue(chats).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // makeToast("Successfully sent");
+                        edtComment.getEditText().setText("");
+                    } else {
+                        makeToast("Error: " + task.getException().getMessage());
+
+                    }
+
+                });
+            } else {
+                edtComment.setError("Cannot send empty message");
+                //  makeToast("Comment cannot be empty");
+            }
+
+        });
+
 
     }
 

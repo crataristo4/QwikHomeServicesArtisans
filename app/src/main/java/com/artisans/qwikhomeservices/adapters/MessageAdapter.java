@@ -34,11 +34,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         View view = null;
         switch (viewType) {
             case Message.ITEM_TYPE_SENT:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_message_sent, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_message_received, parent, false);
 
                 break;
             case Message.ITEM_TYPE_RECEIVED:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_message_received, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_message_sent, parent, false);
+
                 break;
         }
         return new MessageViewHolder(Objects.requireNonNull(view));
@@ -79,15 +80,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         public TextView txtMsg, txtDateTime;
         public CircleImageView imgPhoto;
-        private View view;
 
         MessageViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.view = itemView;
 
-            txtMsg = view.findViewById(R.id.txtMessage);
-            txtDateTime = view.findViewById(R.id.txtDateTime);
-            imgPhoto = view.findViewById(R.id.imgPhoto);
+            txtMsg = itemView.findViewById(R.id.txtMessage);
+            txtDateTime = itemView.findViewById(R.id.txtDateTime);
+            imgPhoto = itemView.findViewById(R.id.imgPhoto);
 
         }
     }
