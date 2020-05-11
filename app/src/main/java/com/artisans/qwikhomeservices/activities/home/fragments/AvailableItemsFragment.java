@@ -68,12 +68,7 @@ public class AvailableItemsFragment extends Fragment {
         adapter = new StylesAdapter(options);
         rv.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new StylesAdapter.onItemClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                DisplayViewUI.displayToast(getActivity(), " Item " + position + " edit");
-            }
-        });
+        adapter.setOnItemClickListener((view1, position) -> DisplayViewUI.displayToast(getActivity(), " Item " + position + " edit"));
 
 
     }

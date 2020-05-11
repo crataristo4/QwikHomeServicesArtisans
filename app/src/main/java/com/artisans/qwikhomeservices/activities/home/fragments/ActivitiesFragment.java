@@ -27,11 +27,11 @@ import com.artisans.qwikhomeservices.models.ActivityItemModel;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class ActivitiesFragment extends Fragment {
@@ -50,6 +50,7 @@ public class ActivitiesFragment extends Fragment {
     private ArrayList<ActivityItemModel> arrayList = new ArrayList<>();
     private LinearLayoutManager layoutManager;
     private Parcelable mState;
+    ListenerRegistration registration;
 
     public ActivitiesFragment() {
         // Required empty public constructor
@@ -135,7 +136,51 @@ public class ActivitiesFragment extends Fragment {
         // Create a query against the collection.
         Query query = collectionReference.orderBy("timeStamp", Query.Direction.DESCENDING).limit(INITIAL_LOAD);
 
-        //get all items from fire store
+
+        registration = query.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e);
+                return;
+            }
+            arrayList.clear();
+
+
+            assert queryDocumentSnapshots != null;
+            for (QueryDocumentSnapshot ds : queryDocumentSnapshots) {
+                if (ds != null) {
+
+                    Log.i(TAG, "onEvent: " + ds.getData());
+                    ActivityItemModel itemModel = ds.toObject(ActivityItemModel.class);
+//group data by status
+                    if (ds.getData().containsKey("status")) {
+                        Log.i(TAG, "status: " + ds.getData().get("status"));
+
+                        arrayList.add(new ActivityItemModel(ActivityItemModel.TEXT_TYPE,
+                                itemModel.getStatus(),
+                                itemModel.getUserName(),
+                                itemModel.getUserPhoto(),
+                                itemModel.getTimeStamp()));
+
+                    }
+                    //group data by item description
+                    else if (ds.getData().containsKey("itemDescription")) {
+                        Log.i(TAG, "itemDescription: " + ds.getData().get("itemDescription"));
+
+                        arrayList.add(new ActivityItemModel(ActivityItemModel.IMAGE_TYPE,
+                                itemModel.getItemImage(),
+                                itemModel.getItemDescription(),
+                                itemModel.getUserName(),
+                                itemModel.getUserPhoto(),
+                                itemModel.getTimeStamp()));
+                    }
+                }
+            }
+            adapter.notifyDataSetChanged();
+
+
+        });
+
+       /* //get all items from fire store
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot ds : Objects.requireNonNull(task.getResult())) {
@@ -172,7 +217,7 @@ public class ActivitiesFragment extends Fragment {
 
             }
 
-        });
+        });*/
     }
 
 
@@ -220,6 +265,7 @@ public class ActivitiesFragment extends Fragment {
         // activityItemAdapter.startListening();
 
 
+
     }
 
 
@@ -227,6 +273,7 @@ public class ActivitiesFragment extends Fragment {
     public void onStop() {
         super.onStop();
         //activityItemAdapter.stopListening();
+        registration.remove();
     }
 
     @Override

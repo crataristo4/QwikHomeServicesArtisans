@@ -24,8 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import java.util.Objects;
 
+// TODO: 10-May-20 group requests received from users
 
 public class RequestFragment extends Fragment {
     private FragmentRequestBinding fragmentRequestBinding;
@@ -90,7 +90,7 @@ public class RequestFragment extends Fragment {
 
         FirebaseRecyclerOptions<RequestModel> options = new FirebaseRecyclerOptions.Builder<RequestModel>().
                 setQuery(query, RequestModel.class).build();
-        requestAdapter = new RequestReceivedAdapter(options, Objects.requireNonNull(getActivity()).getSupportFragmentManager());
+        requestAdapter = new RequestReceivedAdapter(options, requireActivity().getSupportFragmentManager());
         // requestAdapter.notifyDataSetChanged();
 
         swipeRefreshLayout.setRefreshing(true);

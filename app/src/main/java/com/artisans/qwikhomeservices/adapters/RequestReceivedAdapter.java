@@ -47,14 +47,26 @@ public class RequestReceivedAdapter extends FirebaseRecyclerAdapter<RequestModel
             requestReceivedAdapterViewHolder.btnChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent chatIntent = new Intent(requestReceivedAdapterViewHolder
+                            .layoutRequestReceivedBinding
+                            .getRoot()
+                            .getContext(), ChatActivity.class);
+                    //pass users data
+                    String adapterPosition = getRef(i).getKey();
+                    chatIntent.putExtra("senderName", requestModel.getSenderName());
+                    chatIntent.putExtra("senderPhoto", requestModel.getSenderPhoto());
+                    chatIntent.putExtra("senderID", requestModel.getSenderId());
+                    chatIntent.putExtra("senderReason", requestModel.getReason());
+                    chatIntent.putExtra("adapterPosition", adapterPosition);
+                    chatIntent.putExtra("servicePersonName", requestModel.getServicePersonName());
+                    chatIntent.putExtra("servicePersonPhoto", requestModel.getSenderPhoto());
+
 
                     requestReceivedAdapterViewHolder
                             .layoutRequestReceivedBinding
                             .getRoot()
                             .getContext()
-                            .startActivity(new Intent(requestReceivedAdapterViewHolder.
-                                    layoutRequestReceivedBinding.
-                                    getRoot().getContext(), ChatActivity.class));
+                            .startActivity(chatIntent);
                 }
             });
         } else {
@@ -93,7 +105,7 @@ public class RequestReceivedAdapter extends FirebaseRecyclerAdapter<RequestModel
     //an inner class to hold the views to be inflated
     public static class RequestReceivedAdapterViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageButton btnView, btnChat, btnRate;
+        private ImageButton btnView, btnChat;
         private RatingBar ratingBar;
         private TextView txtWorkDone, txtResponse;
 
@@ -114,7 +126,7 @@ public class RequestReceivedAdapter extends FirebaseRecyclerAdapter<RequestModel
             if (!String.valueOf(rating).isEmpty() && rating > 0) {
                 ratingBar.setVisibility(View.VISIBLE);
                 ratingBar.setRating(rating);
-                btnRate.setEnabled(false);
+
 
             } else if (rating == 0) {
                 ratingBar.setVisibility(View.INVISIBLE);
@@ -150,8 +162,7 @@ public class RequestReceivedAdapter extends FirebaseRecyclerAdapter<RequestModel
                 txtResponse.setText(response);
 
 
-            }
-            if (response.equals("Request Rejected")) {
+            } else if (response.equals("Request Rejected")) {
                 btnChat.setVisibility(View.GONE);
                 txtWorkDone.setText(R.string.wkNtDone);
                 txtWorkDone.setVisibility(View.VISIBLE);

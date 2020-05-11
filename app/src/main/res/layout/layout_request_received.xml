@@ -46,8 +46,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{@string/requestRc(request.senderName)}"
                 android:textColor="@color/purple"
+                app:layout_constraintEnd_toStartOf="@+id/btnView"
                 app:layout_constraintStart_toEndOf="@+id/imgItemPhoto"
                 app:layout_constraintTop_toTopOf="parent" />
 
