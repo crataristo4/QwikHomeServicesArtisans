@@ -1,21 +1,24 @@
 package com.artisans.qwikhomeservices.adapters;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.artisans.qwikhomeservices.R;
 import com.artisans.qwikhomeservices.activities.home.MainActivity;
-import com.artisans.qwikhomeservices.databinding.LayoutMessageReceivedBinding;
-import com.artisans.qwikhomeservices.databinding.LayoutMessageSentBinding;
 import com.artisans.qwikhomeservices.models.Message;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
+import java.util.Objects;
 
-public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     public static String UID;
     private List<Message> messageList;
@@ -24,41 +27,37 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.messageList = messageList;
     }
 
+
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = null;
         switch (viewType) {
             case Message.ITEM_TYPE_SENT:
-                return new MessageSent(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.layout_message_sent, parent, false));
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_message_sent, parent, false);
 
+                break;
             case Message.ITEM_TYPE_RECEIVED:
-                return new MessageReceived(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.layout_message_received, parent, false));
-
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_message_received, parent, false);
+                break;
         }
-        return null;
+        return new MessageViewHolder(Objects.requireNonNull(view));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message messages = messageList.get(position);
-        if (messages != null) {
-            switch (messages.type) {
-                case Message.ITEM_TYPE_SENT:
-                    ((MessageSent) holder).layoutMessageSentBinding.setMessageSent(messages);
-
-                    break;
-
-                case Message.ITEM_TYPE_RECEIVED:
-                    ((MessageReceived) holder).layoutMessageReceivedBinding.setMessageReceived(messages);
-
-                    break;
-            }
-        }
+        holder.txtMsg.setText(messages.getMessage());
+        holder.txtDateTime.setText(messages.getMessageDateTime());
+        Glide.with(holder.itemView.getContext())
+                .load(messages.getSenderPhoto())
+                .error(holder.itemView.getResources().getDrawable(R.drawable.photoe))
+                .into(holder.imgPhoto);
 
 
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -76,23 +75,21 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    static class MessageSent extends RecyclerView.ViewHolder {
+    static class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        private LayoutMessageSentBinding layoutMessageSentBinding;
+        public TextView txtMsg, txtDateTime;
+        public CircleImageView imgPhoto;
+        private View view;
 
-        public MessageSent(@NonNull LayoutMessageSentBinding itemView) {
-            super(itemView.getRoot());
-            this.layoutMessageSentBinding = itemView;
+        MessageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            this.view = itemView;
+
+            txtMsg = view.findViewById(R.id.txtMessage);
+            txtDateTime = view.findViewById(R.id.txtDateTime);
+            imgPhoto = view.findViewById(R.id.imgPhoto);
+
         }
     }
 
-    static class MessageReceived extends RecyclerView.ViewHolder {
-
-        private LayoutMessageReceivedBinding layoutMessageReceivedBinding;
-
-        public MessageReceived(@NonNull LayoutMessageReceivedBinding layoutMessageReceivedBinding) {
-            super(layoutMessageReceivedBinding.getRoot());
-            this.layoutMessageReceivedBinding = layoutMessageReceivedBinding;
-        }
-    }
 }

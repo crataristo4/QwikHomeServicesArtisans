@@ -60,6 +60,7 @@ public class RequestReceivedAdapter extends FirebaseRecyclerAdapter<RequestModel
                     chatIntent.putExtra("adapterPosition", adapterPosition);
                     chatIntent.putExtra("servicePersonName", requestModel.getServicePersonName());
                     chatIntent.putExtra("servicePersonPhoto", requestModel.getSenderPhoto());
+                    chatIntent.putExtra("receiverID", requestModel.getReceiverId());
 
 
                     requestReceivedAdapterViewHolder

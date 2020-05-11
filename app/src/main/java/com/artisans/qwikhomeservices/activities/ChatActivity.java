@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.artisans.qwikhomeservices.R;
+import com.artisans.qwikhomeservices.activities.home.MainActivity;
 import com.artisans.qwikhomeservices.adapters.MessageAdapter;
 import com.artisans.qwikhomeservices.models.Message;
 import com.bumptech.glide.Glide;
@@ -24,10 +25,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     private MessageAdapter adapter;
     private List<Message> messageList;
     private DatabaseReference chatsDbRef;
-    private String uid, servicePersonName, servicePersonPhoto, senderName, senderPhoto, reason, getAdapterPosition;
+    private String userId, servicePersonName, servicePersonPhoto, senderName, senderPhoto, reason, getAdapterPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class ChatActivity extends AppCompatActivity {
             reason = getIntent().getStringExtra("senderReason");//content of the report
             senderName = getIntent().getStringExtra("senderName");//name of sender
             senderPhoto = getIntent().getStringExtra("senderPhoto");//sender photo
+            userId = getIntent().getStringExtra("senderID");//sender id
 
 
 
@@ -122,6 +125,7 @@ public class ChatActivity extends AppCompatActivity {
                         Message message = ds.getValue(Message.class);
                         messageList.add(message);
                     }
+                    adapter.notifyDataSetChanged();
                 }
             }
 
@@ -138,27 +142,26 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-
-        //add decorator
-        recyclerView.addItemDecoration(itemDecoration);
-        //attach adapter to recycler view
-        recyclerView.setAdapter(adapter);
-        //notify data change
-        adapter.notifyDataSetChanged();
-
     }
 
     private void addChat() {
 
         String postChat = edtComment.getEditText().getText().toString();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM HH:mm");
+
+        String dateTime = simpleDateFormat.format(calendar.getTime());
 
         if (!postChat.isEmpty()) {
             HashMap<String, Object> chats = new HashMap<>();
-            chats.put("chats", postChat);
-            chats.put("userId", uid);
-            chats.put("timeStamp", ServerValue.TIMESTAMP);
-            chats.put("fullName", senderName);
-            chats.put("image", senderPhoto);
+            chats.put("message", postChat);
+            chats.put("senderId", MainActivity.uid);
+            chats.put("senderName", servicePersonName);
+            chats.put("senderPhoto", MainActivity.imageUrl);
+            chats.put("messageDateTime", dateTime);
+            chats.put("receiverName", senderName);
+            chats.put("receiverId", userId);
+
 
             String chatId = chatsDbRef.push().getKey();
             assert chatId != null;

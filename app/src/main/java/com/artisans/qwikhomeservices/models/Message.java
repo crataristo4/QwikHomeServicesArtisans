@@ -26,7 +26,6 @@ public class Message extends BaseObservable {
     private String message;
     public static final int ITEM_TYPE_SENT = 0;
     public static final int ITEM_TYPE_RECEIVED = 1;
-    public int type;
 
     public Message() {
     }

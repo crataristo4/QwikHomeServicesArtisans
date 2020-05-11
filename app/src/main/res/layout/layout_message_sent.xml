@@ -20,7 +20,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        app:chatImage="@{messageSent.senderPhoto}"
         android:src="@drawable/abc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +32,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:padding="10dp"
-        android:text="@{messageSent.message}"
         android:textColor="@android:color/white"
         app:angle="8dp"
         app:arrowCenter="true"
