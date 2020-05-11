@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout>
+
+    <data>
+
+        <variable
+            name="messageReceived"
+            type="com.artisans.qwikhomeservices.models.Message" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -11,6 +20,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        app:chatImage="@{messageReceived.receiverPhoto}"
         android:src="@drawable/abc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +33,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:padding="10dp"
-        android:text="@string/message"
+        android:text="@{messageReceived.message}"
         android:textColor="@android:color/white"
         app:angle="8dp"
         app:arrowCenter="true"
@@ -32,19 +42,20 @@
         app:arrowPosition="14dp"
         app:arrowWidth="8dp"
         app:bubbleColor="@color/purple"
-        app:layout_constraintEnd_toStartOf="@+id/comment_image"
+        app:layout_constraintEnd_toStartOf="@+id/imgPhoto"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/comment_image" />
+        app:layout_constraintTop_toTopOf="@+id/imgPhoto" />
 
     <TextView
         android:id="@+id/txtDateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="@string/date_time"
+        android:text="@{messageReceived.messageDateTime}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imgPhoto"
         app:layout_constraintTop_toBottomOf="@+id/imgPhoto" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
