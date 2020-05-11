@@ -1,6 +1,5 @@
 package com.artisans.qwikhomeservices.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -17,26 +16,23 @@ import com.artisans.qwikhomeservices.models.Message;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public static final int ITEM_TYPE_SENT = 0;
-    public static final int ITEM_TYPE_RECEIVED = 1;
+
     public static String UID;
     private List<Message> messageList;
-    private Context context;
 
-    public MessageAdapter(List<Message> messageList, Context context) {
+    public MessageAdapter(List<Message> messageList) {
         this.messageList = messageList;
-        this.context = context;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
-            case ITEM_TYPE_SENT:
-                return new MessageFromSenderViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.layout_message_sent, parent, false));
+            case Message.ITEM_TYPE_SENT:
+                return new MessageSent(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.layout_message_sent, parent, false));
 
-            case ITEM_TYPE_RECEIVED:
-                return new MessageToReceiverViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.layout_message_received, parent, false));
+            case Message.ITEM_TYPE_RECEIVED:
+                return new MessageReceived(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.layout_message_received, parent, false));
 
         }
         return null;
@@ -44,6 +40,22 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+        Message messages = messageList.get(position);
+        if (messages != null) {
+            switch (messages.type) {
+                case Message.ITEM_TYPE_SENT:
+                    ((MessageSent) holder).layoutMessageSentBinding.setMessageSent(messages);
+
+                    break;
+
+                case Message.ITEM_TYPE_RECEIVED:
+                    ((MessageReceived) holder).layoutMessageReceivedBinding.setMessageReceived(messages);
+
+                    break;
+            }
+        }
+
 
 
     }
@@ -58,27 +70,27 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         UID = MainActivity.uid;
 
         if (messageList.get(position).getSenderId().equals(UID)) {
-            return ITEM_TYPE_SENT;
+            return Message.ITEM_TYPE_SENT;
         } else {
-            return ITEM_TYPE_RECEIVED;
+            return Message.ITEM_TYPE_RECEIVED;
         }
     }
 
-    static class MessageFromSenderViewHolder extends RecyclerView.ViewHolder {
+    static class MessageSent extends RecyclerView.ViewHolder {
 
         private LayoutMessageSentBinding layoutMessageSentBinding;
 
-        public MessageFromSenderViewHolder(@NonNull LayoutMessageSentBinding itemView) {
+        public MessageSent(@NonNull LayoutMessageSentBinding itemView) {
             super(itemView.getRoot());
             this.layoutMessageSentBinding = itemView;
         }
     }
 
-    static class MessageToReceiverViewHolder extends RecyclerView.ViewHolder {
+    static class MessageReceived extends RecyclerView.ViewHolder {
 
         private LayoutMessageReceivedBinding layoutMessageReceivedBinding;
 
-        public MessageToReceiverViewHolder(@NonNull LayoutMessageReceivedBinding layoutMessageReceivedBinding) {
+        public MessageReceived(@NonNull LayoutMessageReceivedBinding layoutMessageReceivedBinding) {
             super(layoutMessageReceivedBinding.getRoot());
             this.layoutMessageReceivedBinding = layoutMessageReceivedBinding;
         }

@@ -24,6 +24,9 @@ public class Message extends BaseObservable {
     private String senderPhoto, receiverPhoto;
     private String messageDateTime;
     private String message;
+    public static final int ITEM_TYPE_SENT = 0;
+    public static final int ITEM_TYPE_RECEIVED = 1;
+    public int type;
 
     public Message() {
     }
@@ -120,5 +123,6 @@ public class Message extends BaseObservable {
     public void setMessage(String message) {
         this.message = message;
     }
+
 
 }
