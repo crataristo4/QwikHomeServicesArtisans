@@ -29,7 +29,6 @@ public class RequestModel extends BaseObservable {
     public String itemImage;
     public String distanceBetween;
     public String senderPhoto;
-    public String senderName;
     public String servicePersonName;
     public String servicePersonPhoto;
     public String dateRequested;
@@ -42,25 +41,6 @@ public class RequestModel extends BaseObservable {
     public RequestModel() {
     }
 
-    public RequestModel(float rating, String senderId, String receiverId,
-                        String name, String reason, String price, String itemName,
-                        String response, String itemImage, String senderPhoto, String senderName,
-                        String servicePersonName, String servicePersonPhoto, String dateRequested) {
-        this.rating = rating;
-        this.senderId = senderId;
-        this.receiverId = receiverId;
-        this.name = name;
-        this.reason = reason;
-        this.price = price;
-        this.itemName = itemName;
-        this.response = response;
-        this.itemImage = itemImage;
-        this.senderPhoto = senderPhoto;
-        this.senderName = senderName;
-        this.servicePersonName = servicePersonName;
-        this.servicePersonPhoto = servicePersonPhoto;
-        this.dateRequested = dateRequested;
-    }
 
     @BindingAdapter("imageItemUrl")
     public static void loadImages(AppCompatImageView imageView, String imageUrl) {
@@ -193,9 +173,6 @@ public class RequestModel extends BaseObservable {
 
     }
 
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
-    }
 
     @Bindable
     public String getServicePersonName() {
@@ -247,5 +224,29 @@ public class RequestModel extends BaseObservable {
 
     public void setWorkDone(String workDone) {
         isWorkDone = workDone;
+    }
+
+    public String getIsWorkDone() {
+        return isWorkDone;
+    }
+
+    public void setIsWorkDone(String isWorkDone) {
+        this.isWorkDone = isWorkDone;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

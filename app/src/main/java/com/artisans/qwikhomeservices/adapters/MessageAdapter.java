@@ -11,12 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.artisans.qwikhomeservices.R;
 import com.artisans.qwikhomeservices.activities.home.MainActivity;
 import com.artisans.qwikhomeservices.models.Message;
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 import java.util.Objects;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
@@ -50,11 +47,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         Message messages = messageList.get(position);
         holder.txtMsg.setText(messages.getMessage());
         holder.txtDateTime.setText(messages.getMessageDateTime());
-        Glide.with(holder.itemView.getContext())
+       /* Glide.with(holder.itemView.getContext())
                 .load(messages.getSenderPhoto())
                 .error(holder.itemView.getResources().getDrawable(R.drawable.photoe))
                 .into(holder.imgPhoto);
-
+*/
 
 
     }
@@ -78,15 +75,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     static class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtMsg, txtDateTime;
-        public CircleImageView imgPhoto;
+        TextView txtMsg, txtDateTime;
+        // public CircleImageView imgPhoto;
 
         MessageViewHolder(@NonNull View itemView) {
             super(itemView);
 
             txtMsg = itemView.findViewById(R.id.txtMessage);
             txtDateTime = itemView.findViewById(R.id.txtDateTime);
-            imgPhoto = itemView.findViewById(R.id.imgPhoto);
+            //imgPhoto = itemView.findViewById(R.id.imgPhoto);
 
         }
     }
