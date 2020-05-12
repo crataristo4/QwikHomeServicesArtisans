@@ -2,13 +2,13 @@ package com.artisans.qwikhomeservices.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,12 +30,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 public class ChatActivity extends AppCompatActivity {
 
+    EmojiconEditText emojiconEditText;
+    ImageView emojiButton;
+    EmojIconActions emojIconActions;
     private CircleImageView handyManPhoto;
     private TextView txtName, txtContent;
     private TextInputLayout edtComment;
@@ -70,10 +76,10 @@ public class ChatActivity extends AppCompatActivity {
         Intent getDataIntent = getIntent();
         if (getDataIntent != null) {
             //get data from the view holder
-            servicePersonPhoto = getIntent().getStringExtra("servicePersonPhoto");//itemImage
+            //servicePersonPhoto = getIntent().getStringExtra("servicePersonPhoto");//itemImage
             getAdapterPosition = getIntent().getStringExtra("adapterPosition");//adapter position of the item
             servicePersonName = getIntent().getStringExtra("servicePersonName");//name of handyMan
-            reason = getIntent().getStringExtra("senderReason");//content of the report
+            //  reason = getIntent().getStringExtra("senderReason");//content of the report
             senderName = getIntent().getStringExtra("senderName");//name of sender
             senderPhoto = getIntent().getStringExtra("senderPhoto");//sender photo
             userId = getIntent().getStringExtra("senderID");//sender id
@@ -85,13 +91,15 @@ public class ChatActivity extends AppCompatActivity {
 
         handyManPhoto = findViewById(R.id.imgHandyManPhoto);
         txtName = findViewById(R.id.txtHandyManName);
-        txtContent = findViewById(R.id.txtShowReason);
-        edtComment = findViewById(R.id.edtChatMsg);
+
+        ConstraintLayout activity_main = findViewById(R.id.activity_main);
+        emojiButton = findViewById(R.id.emoticonButton);
+        emojiconEditText = findViewById(R.id.emoticonEditTxt);
+        emojIconActions = new EmojIconActions(getApplicationContext(), activity_main, emojiButton, emojiconEditText);
+        emojIconActions.ShowEmojicon();
 
         txtName.setText(senderName);
-        txtContent.setText(reason);
         Glide.with(this).load(senderPhoto).into(handyManPhoto);
-
 
         chatsDbRef = FirebaseDatabase.getInstance().getReference().child("Requests").child(getAdapterPosition);
 
@@ -102,7 +110,6 @@ public class ChatActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewChats);
         layoutManager = new LinearLayoutManager(this);
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MessageAdapter(messageList);
@@ -114,11 +121,12 @@ public class ChatActivity extends AppCompatActivity {
 
         //querying the database base of the time posted
         Query query = postChatsDbRef.orderByChild("messageDateTime");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        runOnUiThread(() -> query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    messageList.clear();
+                    // messageList.clear();
 
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
@@ -135,13 +143,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
-
-
-       /* FirebaseRecyclerOptions<Chat> options = new FirebaseRecyclerOptions.Builder<Chat>().
-                setQuery(query, Chat.class).build();
-
-        adapter = new ChatAdapter(options);*/
+        }));
 
 
 
@@ -149,14 +151,13 @@ public class ChatActivity extends AppCompatActivity {
 
     private void addChat() {
 
-        runOnUiThread(() -> {
-            String postChat = edtComment.getEditText().getText().toString();
+        String postChat = emojiconEditText.getText().toString();
             Calendar calendar = Calendar.getInstance();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM HH:mm", Locale.ENGLISH);
 
             String dateTime = simpleDateFormat.format(calendar.getTime());
 
-            if (!postChat.isEmpty()) {
+        if (!postChat.trim().isEmpty()) {
                 HashMap<String, Object> chats = new HashMap<>();
                 chats.put("message", postChat);
                 chats.put("senderId", MainActivity.uid);
@@ -166,36 +167,20 @@ public class ChatActivity extends AppCompatActivity {
                 chats.put("receiverName", senderName);
                 chats.put("receiverId", userId);
 
-
                 String chatId = chatsDbRef.push().getKey();
                 assert chatId != null;
 
-                chatsDbRef.child("Chats").child(chatId).setValue(chats).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // makeToast("Successfully sent");
-                        edtComment.getEditText().setText("");
-                    } else {
-                        makeToast("Error: " + task.getException().getMessage());
+            chatsDbRef.child("Chats").child(chatId).setValue(chats);
+            emojiconEditText.getText().clear();
 
-                    }
-
-                });
-            } else {
-                edtComment.setError("Cannot send empty message");
+        } else if (postChat.trim().isEmpty()) {
+            emojiconEditText.setError("Cannot send empty message");
                 //  makeToast("Comment cannot be empty");
             }
 
-        });
-
-
     }
 
 
-    void makeToast(String s) {
-        Toast toast = Toast.makeText(ChatActivity.this, s, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
-    }
 
     @Override
     protected void onStart() {

@@ -20,11 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.artisans.qwikhomeservices.R;
 import com.artisans.qwikhomeservices.activities.home.about.AddDesignOrStyleActivity;
 import com.artisans.qwikhomeservices.activities.home.bottomsheets.AddStatusToFireStore;
-import com.artisans.qwikhomeservices.adapters.ActivityItemAdapter;
 import com.artisans.qwikhomeservices.adapters.MultiViewTypeAdapter;
 import com.artisans.qwikhomeservices.databinding.FragmentActivitiesBinding;
 import com.artisans.qwikhomeservices.models.ActivityItemModel;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -43,14 +41,12 @@ public class ActivitiesFragment extends Fragment {
     private boolean userScrolled = false;
     private int currentPage = 1;
     private FragmentActivitiesBinding fragmentActivitiesBinding;
-    private RecyclerView rvBarbers, rvHairStylist, rvInteriorDeco, recyclerView;
-    private DatabaseReference dbRef;
-    private ActivityItemAdapter activityItemAdapter;
+    private RecyclerView recyclerView;
     private MultiViewTypeAdapter adapter;
     private ArrayList<ActivityItemModel> arrayList = new ArrayList<>();
     private LinearLayoutManager layoutManager;
     private Parcelable mState;
-    ListenerRegistration registration;
+    private ListenerRegistration registration;
 
     public ActivitiesFragment() {
         // Required empty public constructor

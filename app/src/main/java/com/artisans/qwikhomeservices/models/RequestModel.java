@@ -36,6 +36,7 @@ public class RequestModel extends BaseObservable {
     public String paymentStatus;
     public String paymentAmount;
     public String isWorkDone;
+    private String firstName, lastName;
 
 
     public RequestModel() {
@@ -162,7 +163,6 @@ public class RequestModel extends BaseObservable {
         this.mobileNumber = mobileNumber;
     }
 
-
     public String getItemImage() {
         return itemImage;
     }
@@ -189,7 +189,8 @@ public class RequestModel extends BaseObservable {
 
     @Bindable
     public String getSenderName() {
-        return senderName;
+        return firstName.concat(" ").concat(lastName);
+
     }
 
     public void setSenderName(String senderName) {
