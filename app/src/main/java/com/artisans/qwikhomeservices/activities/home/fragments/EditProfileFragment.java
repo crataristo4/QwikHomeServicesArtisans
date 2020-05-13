@@ -22,7 +22,6 @@ import androidx.fragment.app.FragmentManager;
 import com.artisans.qwikhomeservices.R;
 import com.artisans.qwikhomeservices.activities.home.MainActivity;
 import com.artisans.qwikhomeservices.activities.home.bottomsheets.EditItemBottomSheet;
-import com.artisans.qwikhomeservices.activities.home.bottomsheets.VerifyPhoneBottomSheet;
 import com.artisans.qwikhomeservices.databinding.FragmentEditProfileBinding;
 import com.artisans.qwikhomeservices.utils.DisplayViewUI;
 import com.artisans.qwikhomeservices.utils.MyConstants;
@@ -33,7 +32,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +60,7 @@ public class EditProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Objects.requireNonNull(getActivity()).setTitle("Profile");
+        requireActivity().setTitle("Profile");
         // Inflate the layout for this fragment
         fragmentEditProfileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false);
         return fragmentEditProfileBinding.getRoot();
@@ -85,7 +83,7 @@ public class EditProfileFragment extends Fragment {
         profileImage.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fadein));
 
         fragmentEditProfileBinding.imgUploadPhoto.setOnClickListener(v -> {
-            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fadein, R.anim.scale_out)
                     .replace(R.id.containerSettings, profilePhotoEditFragment)
@@ -94,7 +92,7 @@ public class EditProfileFragment extends Fragment {
 
         });
 
-        fragmentEditProfileBinding.fabUploadPhoto.setOnClickListener(v -> openGallery());
+        fragmentEditProfileBinding.fabUploadPhoto.setOnClickListener(v -> DisplayViewUI.openGallery(requireContext(), this));
         fragmentEditProfileBinding.txtFirstName.setText(MainActivity.firstName);
         fragmentEditProfileBinding.txtLastName.setText(MainActivity.lastName);
         fragmentEditProfileBinding.txtAboutUser.setText(MainActivity.about);
@@ -116,17 +114,17 @@ public class EditProfileFragment extends Fragment {
 
     }
 
-    private void openGallery() {
-        CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .setAspectRatio(16, 16)
-                .start(Objects.requireNonNull(getContext()), this);
-    }
-
+    /* private void openGallery() {
+         CropImage.activity()
+                 .setGuidelines(CropImageView.Guidelines.ON)
+                 .setAspectRatio(16, 16)
+                 .start(requireContext(), this);
+     }
+ */
     public void onClick(View v) {
         Bundle bundle = new Bundle();
         EditItemBottomSheet editItemBottomSheet = new EditItemBottomSheet();
-        VerifyPhoneBottomSheet verifyPhoneBottomSheet = new VerifyPhoneBottomSheet();
+        // VerifyPhoneBottomSheet verifyPhoneBottomSheet = new VerifyPhoneBottomSheet();
 
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
@@ -139,21 +137,21 @@ public class EditProfileFragment extends Fragment {
             name = String.valueOf(fragmentEditProfileBinding.txtFirstName.getText());
             bundle.putString(MyConstants.FIRST_NAME, name);
             editItemBottomSheet.setArguments(bundle);
-            editItemBottomSheet.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), MyConstants.FIRST_NAME);
+            editItemBottomSheet.show(requireActivity().getSupportFragmentManager(), MyConstants.FIRST_NAME);
 
         } else if (v.getId() == R.id.lastNameLayout) {
 
             name = String.valueOf(fragmentEditProfileBinding.txtLastName.getText());
             bundle.putString(MyConstants.LAST_NAME, name);
             editItemBottomSheet.setArguments(bundle);
-            editItemBottomSheet.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), MyConstants.LAST_NAME);
+            editItemBottomSheet.show(requireActivity().getSupportFragmentManager(), MyConstants.LAST_NAME);
 
         } else if (v.getId() == R.id.aboutLayout) {
 
             String getAbout = String.valueOf(fragmentEditProfileBinding.txtAboutUser.getText());
             bundle.putString(MyConstants.ABOUT, getAbout);
             editItemBottomSheet.setArguments(bundle);
-            editItemBottomSheet.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), MyConstants.ABOUT);
+            editItemBottomSheet.show(requireActivity().getSupportFragmentManager(), MyConstants.ABOUT);
         }
     }
 
@@ -170,7 +168,7 @@ public class EditProfileFragment extends Fragment {
                 assert result != null;
                 uri = result.getUri();
 
-                Glide.with(Objects.requireNonNull(getActivity()))
+                Glide.with(requireActivity())
                         .load(uri)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(profileImage);

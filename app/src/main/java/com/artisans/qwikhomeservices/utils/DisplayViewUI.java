@@ -11,8 +11,12 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.artisans.qwikhomeservices.R;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.Objects;
 import java.util.Random;
@@ -89,5 +93,21 @@ public class DisplayViewUI {
         assert networkInfo != null;
         return networkInfo.isConnectedOrConnecting();
 
+    }
+
+    static public void openGallery(AppCompatActivity context) {
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setInitialCropWindowPaddingRatio(0)
+                //.setAspectRatio(16, 16)
+                .start(context);
+    }
+
+    static public void openGallery(Context context, Fragment fragment) {
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setInitialCropWindowPaddingRatio(0)
+                //.setAspectRatio(16, 16)
+                .start(context, fragment);
     }
 }

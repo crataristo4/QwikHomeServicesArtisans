@@ -350,10 +350,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent;
         if (item.getItemId() == R.id.action_settings) {
 
-            Intent gotoSettingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
-            startActivity(gotoSettingsIntent);
+            intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+
+        } else if (item.getItemId() == R.id.action_logout) {
+
+            intent = new Intent(MainActivity.this, SplashScreenActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
             return true;
 
         }

@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class SignInWithPhoneNumberActivity extends AppCompatActivity {
-    String phoneNumber = "+16505554569"; //xigi bytes
+    String phoneNumber = "++16505554561"; //FRIV ASUKA
     //cyril 16505554562, micheal "+16505554569", me "+16505554561",florent "+16505554566",charles +1 650-555-4564
     String smsCode = "123456";
     private long mBackPressed;

@@ -43,5 +43,7 @@ public class FinishAccountSetUpActivity extends AppCompatActivity {
 
         }
 
+        mBackPressed = System.currentTimeMillis();
+
     }
 }

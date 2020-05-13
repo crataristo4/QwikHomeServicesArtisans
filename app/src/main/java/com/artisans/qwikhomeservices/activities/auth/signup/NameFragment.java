@@ -106,7 +106,7 @@ public class NameFragment extends Fragment {
             args.putString(MyConstants.ACCOUNT_TYPE, mGetAccountType);
             args.putString(MyConstants.FULL_NAME, fullName);
             aboutFragment.setArguments(args);
-            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_right,
                     R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right)
                     .replace(R.id.containerFragment, aboutFragment)

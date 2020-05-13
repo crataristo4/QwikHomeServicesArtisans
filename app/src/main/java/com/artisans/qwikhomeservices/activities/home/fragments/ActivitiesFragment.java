@@ -285,13 +285,10 @@ public class ActivitiesFragment extends Fragment {
         super.onResume();
         if (mBundleState != null) {
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
+            new Handler().postDelayed(() -> {
 
-                    mState = mBundleState.getParcelable(KEY);
-                    layoutManager.onRestoreInstanceState(mState);
-                }
+                mState = mBundleState.getParcelable(KEY);
+                layoutManager.onRestoreInstanceState(mState);
             }, 50);
         }
 

@@ -31,7 +31,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +39,6 @@ import java.util.Objects;
 public class AddDesignOrStyleActivity extends AppCompatActivity {
 
     private static final String TAG = "JobTypesActivity";
-    private String dateTime;
     private ActivityDesignStyleBinding activityDesignStyleBinding;
     private AppCompatImageView styleItemPhoto;
     private TextInputLayout txtStyleName, txtPrice;
@@ -96,18 +94,11 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
 
         uid = MainActivity.uid;
 
-        activityDesignStyleBinding.imgStylePhoto.setOnClickListener(v -> openGallery());
+        activityDesignStyleBinding.imgStylePhoto.setOnClickListener(v -> DisplayViewUI.openGallery(this));
 
         activityDesignStyleBinding.btnAdd.setOnClickListener(this::validateInputs);
 
 
-    }
-
-    private void openGallery() {
-        CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .setAspectRatio(16, 16)
-                .start(AddDesignOrStyleActivity.this);
     }
 
     private void validateInputs(View v) {

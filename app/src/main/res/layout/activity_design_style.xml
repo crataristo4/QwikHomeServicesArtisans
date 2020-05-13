@@ -63,7 +63,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
-                    app:helperText="Style or design name tells users what kind of content is it"
+                    app:helperText="Caption tells users what kind of content is displayed"
                     app:helperTextTextColor="@color/purple"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -73,8 +73,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/style_name"
-                        android:inputType="textCapWords"
-                        android:maxLength="30"
+                        android:inputType="textMultiLine"
+                        android:maxLength="80"
                         android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 

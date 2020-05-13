@@ -16,8 +16,6 @@ import com.artisans.qwikhomeservices.activities.home.about.FinishAccountSetUpAct
 import com.artisans.qwikhomeservices.databinding.LayoutGotoEditProfileBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.Objects;
-
 public class WelcomeNoticeBottomSheet extends BottomSheetDialogFragment {
 
     private LayoutGotoEditProfileBinding layoutGotoEditProfileBinding;
@@ -33,11 +31,11 @@ public class WelcomeNoticeBottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        layoutGotoEditProfileBinding.txtShowNotice.setText(Html.fromHtml(Objects.requireNonNull(getActivity()).getResources().getString(R.string.welcomeNote)));
+        layoutGotoEditProfileBinding.txtShowNotice.setText(Html.fromHtml(requireActivity().getResources().getString(R.string.welcomeNote)));
 
         layoutGotoEditProfileBinding.btnSetUp.setOnClickListener(v -> {
             dismiss();
-            Objects.requireNonNull(getActivity()).startActivity(new Intent(getContext(), FinishAccountSetUpActivity.class));
+            requireActivity().startActivity(new Intent(getContext(), FinishAccountSetUpActivity.class));
         });
     }
 }

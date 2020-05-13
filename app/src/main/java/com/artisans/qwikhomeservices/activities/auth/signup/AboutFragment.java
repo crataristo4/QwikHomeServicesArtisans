@@ -31,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -51,7 +50,8 @@ public class AboutFragment extends Fragment {
     private DatabaseReference serviceAccountDbRef, serviceTypeDbRef;
     private StorageReference mStorageReference;
     private FragmentAboutBinding fragmentAboutBinding;
-    private String about, getImageUri, uid, serviceType, mGetFirstName, mGetLatName, mGetAccountType, mGetFullName;
+    private String about, getImageUri, uid, serviceType,
+            mGetFirstName, mGetLatName, mGetAccountType, mGetFullName;
     private Uri uri;
     private CircleImageView profileImage;
 
@@ -91,18 +91,18 @@ public class AboutFragment extends Fragment {
                 .child(uid);
         mStorageReference = FirebaseStorage.getInstance().getReference("photos");
         fragmentAboutBinding.btnFinish.setOnClickListener(this::onClick);
-        fragmentAboutBinding.fabUploadPhoto.setOnClickListener(v -> openGallery());
-        profileImage.setOnClickListener(v -> openGallery());
+        fragmentAboutBinding.fabUploadPhoto.setOnClickListener(v -> DisplayViewUI.openGallery(requireContext(), this));
+        profileImage.setOnClickListener(v -> DisplayViewUI.openGallery(requireContext(), this));
 
     }
 
-    private void openGallery() {
+    /*private void openGallery() {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(16, 16)
                 .start(Objects.requireNonNull(getContext()), this);
     }
-
+*/
     private void onClick(View view) {
         TextInputLayout txtAbout = fragmentAboutBinding.txtAbout;
         about = Objects.requireNonNull(txtAbout.getEditText()).getText().toString();
@@ -140,7 +140,7 @@ public class AboutFragment extends Fragment {
             final File thumb_imageFile = new File(Objects.requireNonNull(uri.getPath()));
 
             try {
-                Bitmap thumb_imageBitmap = new Compressor(Objects.requireNonNull(getContext()))
+                Bitmap thumb_imageBitmap = new Compressor(requireContext())
                         .setMaxHeight(130)
                         .setMaxWidth(13)
                         .setQuality(100)
@@ -153,7 +153,7 @@ public class AboutFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            //                file path for the itemImage
+            // file path for the itemImage
             final StorageReference fileReference = mStorageReference.child(uid + "." + uri.getLastPathSegment());
 
             fileReference.putFile(uri).continueWithTask(task -> {
@@ -190,7 +190,7 @@ public class AboutFragment extends Fragment {
                         if (task1.isSuccessful()) {
                             progressDialog.dismiss();
                             DisplayViewUI.displayToast(getActivity(), "Successfully updated");
-                            Objects.requireNonNull(getActivity()).finish();
+                            requireActivity().finish();
 
 
                         } else {
@@ -220,7 +220,7 @@ public class AboutFragment extends Fragment {
                 assert result != null;
                 uri = result.getUri();
                 Log.i(TAG, "URI: " + uri);
-                Glide.with(Objects.requireNonNull(getActivity()))
+                Glide.with(requireActivity())
                         .load(uri)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(profileImage);
