@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
-    public static String UID;
+    private static String UID;
     private List<Message> messageList;
 
     public MessageAdapter(List<Message> messageList) {
@@ -31,11 +31,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         View view = null;
         switch (viewType) {
             case Message.ITEM_TYPE_SENT:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_message_received, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_message_sent, parent, false);
 
                 break;
             case Message.ITEM_TYPE_RECEIVED:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_message_sent, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_message_received, parent, false);
 
                 break;
         }
