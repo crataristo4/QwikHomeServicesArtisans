@@ -173,6 +173,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
             super(imageTypeBinding.getRoot());
             this.imageTypeBinding = imageTypeBinding;
 
+
         }
 
     }

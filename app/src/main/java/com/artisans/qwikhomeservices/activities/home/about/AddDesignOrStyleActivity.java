@@ -35,6 +35,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class AddDesignOrStyleActivity extends AppCompatActivity {
 
@@ -74,14 +75,14 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         mStorageReference = FirebaseStorage.getInstance().getReference("photos");
-        dbReference = FirebaseFirestore.getInstance().collection("Activity");
+        dbReference = FirebaseFirestore.getInstance().collection("Test");
         id = dbReference.document().getId();
 
         serviceTypeDbRef = FirebaseDatabase.getInstance()
                 .getReference("Styles");
 
         activityDbRef = FirebaseDatabase.getInstance()
-                .getReference("Activity");
+                .getReference("Test");
 
 
         intViews();
@@ -158,6 +159,8 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
                     assert downLoadUri != null;
                     getImageUploadUri = downLoadUri.toString();
 
+                    String documentId = UUID.randomUUID().toString();
+
                     Map<String, Object> itemsMap = new HashMap<>();
                     itemsMap.put("price", price);
                     itemsMap.put("itemDescription", style);
@@ -168,14 +171,14 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
                     itemsMap.put("accountType", accountType);
                     itemsMap.put("numOfLikes", 0);
                     itemsMap.put("numOfComments", 0);
-                    itemsMap.put("id", null);
+                    itemsMap.put("id", documentId);
 
 
                     String randomUID = serviceTypeDbRef.push().getKey();
                     assert randomUID != null;
 
                     //fire store cloud store
-                    dbReference.add(itemsMap).addOnCompleteListener(task2 -> {
+                    dbReference.document(documentId).set(itemsMap).addOnCompleteListener(task2 -> {
 
                         if (task2.isSuccessful()) {
                             serviceTypeDbRef.child(uid).child(randomUID).setValue(itemsMap);

@@ -3,8 +3,6 @@ package com.artisans.qwikhomeservices.models;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.google.firebase.firestore.Exclude;
-
 public class ActivityItemModel extends BaseObservable {
     public static final int TEXT_TYPE = 0;
     public static final int IMAGE_TYPE = 1;
@@ -12,7 +10,6 @@ public class ActivityItemModel extends BaseObservable {
 
     public int type, data;
     public int numOfLikes, numOfComments;
-    @Exclude
     private String id;
     public String itemImage, itemDescription, userName, userPhoto, status, accountType, price;
     public Object timeStamp;
