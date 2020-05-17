@@ -171,14 +171,14 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
                     itemsMap.put("accountType", accountType);
                     itemsMap.put("numOfLikes", 0);
                     itemsMap.put("numOfComments", 0);
-                    itemsMap.put("id", documentId);
+                    //itemsMap.put("id", documentId);
 
 
                     String randomUID = serviceTypeDbRef.push().getKey();
                     assert randomUID != null;
 
                     //fire store cloud store
-                    dbReference.document(documentId).set(itemsMap).addOnCompleteListener(task2 -> {
+                    dbReference.add(itemsMap).addOnCompleteListener(task2 -> {
 
                         if (task2.isSuccessful()) {
                             serviceTypeDbRef.child(uid).child(randomUID).setValue(itemsMap);

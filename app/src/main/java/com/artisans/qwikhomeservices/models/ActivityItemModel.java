@@ -18,37 +18,35 @@ public class ActivityItemModel extends BaseObservable {
     }
 
     //constructor to load image type
-    public ActivityItemModel(int type, String itemImage, String itemDescription, String userName, String userPhoto, Object timeStamp) {
+    public ActivityItemModel(int type, String itemImage, String itemDescription,
+                             String userName, String userPhoto, Object timeStamp,
+                             String id, int numOfLikes, int numOfComments) {
         this.type = type;
         this.itemImage = itemImage;
         this.itemDescription = itemDescription;
         this.userName = userName;
         this.userPhoto = userPhoto;
         this.timeStamp = timeStamp;
+        this.id = id;
+        this.numOfLikes = numOfLikes;
+        this.numOfComments = numOfComments;
+
     }
 
     //constructor to load text type
-    public ActivityItemModel(int type, String status, String userName, String userPhoto, Object timeStamp) {
+    public ActivityItemModel(int type, String status, String userName,
+                             String userPhoto, Object timeStamp,
+                             String id, int numOfLikes, int numOfComments) {
         this.type = type;
         this.status = status;
         this.userName = userName;
         this.userPhoto = userPhoto;
         this.timeStamp = timeStamp;
+        this.id = id;
+        this.numOfLikes = numOfLikes;
+        this.numOfComments = numOfComments;
     }
 
-    public ActivityItemModel(int type, String itemDescription, String itemImage) {
-        this.type = type;
-        this.itemDescription = itemDescription;
-        this.itemImage = itemImage;
-
-    }
-
-    public ActivityItemModel(int type, String itemDescription, int data) {
-        this.type = type;
-        this.itemDescription = itemDescription;
-        this.data = data;
-
-    }
 
     public String getItemImage() {
         return itemImage;

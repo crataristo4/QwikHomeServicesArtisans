@@ -147,15 +147,29 @@ public class ActivitiesFragment extends Fragment {
 
                     Log.i(TAG, "onEvent: " + ds.getData());
                     ActivityItemModel itemModel = ds.toObject(ActivityItemModel.class);
+                    //get data from model
+                    String userName = itemModel.getUserName();
+                    String userPhoto = itemModel.getUserPhoto();
+                    String itemDescription = itemModel.getItemDescription();
+                    String status = itemModel.getStatus();
+                    String itemImage = itemModel.getItemImage();
+                    long timeStamp = itemModel.getTimeStamp();
+                    int numOfLikes = itemModel.getNumOfLikes();
+                    int numOfComments = itemModel.getNumOfComments();
+                    String id = ds.getId();
+
 //group data by status
                     if (ds.getData().containsKey("status")) {
                         Log.i(TAG, "status: " + ds.getData().get("status"));
 
                         arrayList.add(new ActivityItemModel(ActivityItemModel.TEXT_TYPE,
-                                itemModel.getStatus(),
-                                itemModel.getUserName(),
-                                itemModel.getUserPhoto(),
-                                itemModel.getTimeStamp()));
+                                status,
+                                userName,
+                                userPhoto,
+                                timeStamp,
+                                id,
+                                numOfLikes,
+                                numOfComments));
 
                     }
                     //group data by item description
@@ -163,11 +177,15 @@ public class ActivitiesFragment extends Fragment {
                         Log.i(TAG, "itemDescription: " + ds.getData().get("itemDescription"));
 
                         arrayList.add(new ActivityItemModel(ActivityItemModel.IMAGE_TYPE,
-                                itemModel.getItemImage(),
-                                itemModel.getItemDescription(),
-                                itemModel.getUserName(),
-                                itemModel.getUserPhoto(),
-                                itemModel.getTimeStamp()));
+                                itemImage,
+                                itemDescription,
+                                userName,
+                                userPhoto,
+                                timeStamp,
+                                id,
+                                numOfLikes,
+                                numOfComments
+                        ));
                     }
                 }
             }
