@@ -48,7 +48,8 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
     private String price;
     private String uid, style, getImageUploadUri, accountType, userImage, userName;
     private long mBackPressed;
-    private CollectionReference dbReference = FirebaseFirestore.getInstance().collection("Activity");
+    private CollectionReference dbReference;
+    private String id;
 
 
     @Override
@@ -73,6 +74,9 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         mStorageReference = FirebaseStorage.getInstance().getReference("photos");
+        dbReference = FirebaseFirestore.getInstance().collection("Activity");
+        id = dbReference.document().getId();
+
         serviceTypeDbRef = FirebaseDatabase.getInstance()
                 .getReference("Styles");
 
@@ -162,6 +166,10 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
                     itemsMap.put("userName", userName);
                     itemsMap.put("timeStamp", GetTimeAgo.getTimeInMillis());
                     itemsMap.put("accountType", accountType);
+                    itemsMap.put("numOfLikes", 0);
+                    itemsMap.put("numOfComments", 0);
+                    itemsMap.put("id", null);
+
 
                     String randomUID = serviceTypeDbRef.push().getKey();
                     assert randomUID != null;

@@ -120,7 +120,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
                                     ((ImageTypeViewHolder) holder).imageTypeBinding.progressBar.setVisibility(View.INVISIBLE);
                                     return false;
                                 }
-                            }).transition(DrawableTransitionOptions.withCrossFade())
+                            }).transition(DrawableTransitionOptions.withCrossFade()).optionalCenterCrop()
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into((((ImageTypeViewHolder) holder).imageTypeBinding.imgContentPhoto));
 
