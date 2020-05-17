@@ -72,13 +72,13 @@ public class ActivitiesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // loadActivityData();
-        initViews();
-        fetchDataFromFireStore();
+
+        loadActivityData();
+        requireActivity().runOnUiThread(this::fetchDataFromFireStore);
 
     }
 
-    private void initViews() {
+    private void loadActivityData() {
         recyclerView = fragmentActivitiesBinding.rvItems;
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setHasFixedSize(true);
@@ -132,20 +132,16 @@ public class ActivitiesFragment extends Fragment {
         // Create a query against the collection.
         Query query = collectionReference.orderBy("timeStamp", Query.Direction.DESCENDING).limit(INITIAL_LOAD);
 
-
         registration = query.addSnapshotListener((queryDocumentSnapshots, e) -> {
             if (e != null) {
                 Log.w(TAG, "Listen failed.", e);
                 return;
             }
             arrayList.clear();
-
-
             assert queryDocumentSnapshots != null;
             for (QueryDocumentSnapshot ds : queryDocumentSnapshots) {
                 if (ds != null) {
 
-                    Log.i(TAG, "onEvent: " + ds.getData());
                     ActivityItemModel itemModel = ds.toObject(ActivityItemModel.class);
                     //get data from model
                     String userName = itemModel.getUserName();
@@ -174,8 +170,6 @@ public class ActivitiesFragment extends Fragment {
                     }
                     //group data by item description
                     else if (ds.getData().containsKey("itemDescription")) {
-                        Log.i(TAG, "itemDescription: " + ds.getData().get("itemDescription"));
-
                         arrayList.add(new ActivityItemModel(ActivityItemModel.IMAGE_TYPE,
                                 itemImage,
                                 itemDescription,

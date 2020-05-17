@@ -75,14 +75,14 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         mStorageReference = FirebaseStorage.getInstance().getReference("photos");
-        dbReference = FirebaseFirestore.getInstance().collection("Test");
+        dbReference = FirebaseFirestore.getInstance().collection("Activity");
         id = dbReference.document().getId();
 
         serviceTypeDbRef = FirebaseDatabase.getInstance()
                 .getReference("Styles");
 
         activityDbRef = FirebaseDatabase.getInstance()
-                .getReference("Test");
+                .getReference("Activity");
 
 
         intViews();
@@ -172,7 +172,6 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
                     itemsMap.put("numOfLikes", 0);
                     itemsMap.put("numOfComments", 0);
                     //itemsMap.put("id", documentId);
-
 
                     String randomUID = serviceTypeDbRef.push().getKey();
                     assert randomUID != null;
