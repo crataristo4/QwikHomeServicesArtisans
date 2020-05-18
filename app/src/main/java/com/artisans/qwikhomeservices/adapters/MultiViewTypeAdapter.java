@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,10 +14,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.artisans.qwikhomeservices.R;
+import com.artisans.qwikhomeservices.activities.home.MainActivity;
 import com.artisans.qwikhomeservices.databinding.ImageTypeBinding;
 import com.artisans.qwikhomeservices.databinding.TextTypeBinding;
 import com.artisans.qwikhomeservices.models.ActivityItemModel;
 import com.artisans.qwikhomeservices.utils.DisplayViewUI;
+import com.artisans.qwikhomeservices.utils.DoubleClickListener;
 import com.artisans.qwikhomeservices.utils.GetTimeAgo;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -25,12 +29,18 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 
 public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+    private String uid = MainActivity.uid;
     private ArrayList<ActivityItemModel> dataSet;
     private Context mContext;
 
@@ -124,6 +134,32 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into((((ImageTypeViewHolder) holder).imageTypeBinding.imgContentPhoto));
 
+                    ((ImageTypeViewHolder) holder).isLiked(object.getId(), ((ImageTypeViewHolder) holder).imgBtnLike);
+
+
+                    ((ImageTypeViewHolder) holder).numOfLikes(((ImageTypeViewHolder) holder).txtLikes, object.getId());
+
+                    ((ImageTypeViewHolder) holder).imageView.setOnClickListener(new DoubleClickListener() {
+                        @Override
+                        public void onDoubleClick(View view) {
+                            DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                                    .getReference()
+                                    .child("Likes")
+                                    .child(object.getId())
+                                    .child(uid);
+
+                            if (((ImageTypeViewHolder) holder).imgBtnLike.getTag().equals("like")) {
+
+                                dbRef.setValue(true);
+
+                            } else {
+
+                                dbRef.removeValue();
+                            }
+                        }
+                    });
+
+
                     break;
 
             }
@@ -168,11 +204,75 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
     //view holder for images
     static class ImageTypeViewHolder extends RecyclerView.ViewHolder {
         ImageTypeBinding imageTypeBinding;
+        ImageView imageView, imgBtnLike;
+        TextView txtLikes;
 
         ImageTypeViewHolder(@NonNull ImageTypeBinding imageTypeBinding) {
             super(imageTypeBinding.getRoot());
             this.imageTypeBinding = imageTypeBinding;
+            imageView = imageTypeBinding.imgContentPhoto;
+            txtLikes = imageTypeBinding.txtLikes;
+            imgBtnLike = imageTypeBinding.imgBtnLike;
 
+
+        }
+
+        /***
+         * method to check if an item is liked or not
+         * @param imgBtnLike image to switch between item liked by changing image item
+         * @param postId the post id for the item in the view holder
+         * **/
+        private void isLiked(String postId, ImageView imgBtnLike) {
+            String uid = MainActivity.uid;
+
+            DatabaseReference likesDbRef = FirebaseDatabase.getInstance()
+                    .getReference().child("Likes").child(postId);
+
+
+            likesDbRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.child(uid).exists()) {
+
+                        imgBtnLike.setImageResource(R.drawable.ic_favorite_red);
+                        imgBtnLike.setTag("liked");
+                    } else {
+                        imgBtnLike.setImageResource(R.drawable.ic_favorite);
+                        imgBtnLike.setTag("like");
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+        }
+
+        /***
+         * method to display the number of likes
+         * @param txtIsLiked TextView to hold the counter
+         * @param postId the post id for the item in the view holder
+         * **/
+        private void numOfLikes(TextView txtIsLiked, String postId) {
+            DatabaseReference likesDbRef = FirebaseDatabase.getInstance()
+                    .getReference().child("Likes").child(postId);
+
+            likesDbRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    txtIsLiked.setText(MessageFormat.format("{0} likes", dataSnapshot.getChildrenCount()));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
 
         }
 

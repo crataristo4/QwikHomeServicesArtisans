@@ -9,7 +9,6 @@ public class ActivityItemModel extends BaseObservable {
     public static final int AUDIO_TYPE = 2;
 
     public int type, data;
-    public int numOfLikes, numOfComments;
     private String id;
     public String itemImage, itemDescription, userName, userPhoto, status, accountType, price;
     public Object timeStamp;
@@ -20,7 +19,7 @@ public class ActivityItemModel extends BaseObservable {
     //constructor to load image type
     public ActivityItemModel(int type, String itemImage, String itemDescription,
                              String userName, String userPhoto, Object timeStamp,
-                             String id, int numOfLikes, int numOfComments) {
+                             String id) {
         this.type = type;
         this.itemImage = itemImage;
         this.itemDescription = itemDescription;
@@ -28,23 +27,21 @@ public class ActivityItemModel extends BaseObservable {
         this.userPhoto = userPhoto;
         this.timeStamp = timeStamp;
         this.id = id;
-        this.numOfLikes = numOfLikes;
-        this.numOfComments = numOfComments;
+
 
     }
 
     //constructor to load text type
     public ActivityItemModel(int type, String status, String userName,
                              String userPhoto, Object timeStamp,
-                             String id, int numOfLikes, int numOfComments) {
+                             String id) {
         this.type = type;
         this.status = status;
         this.userName = userName;
         this.userPhoto = userPhoto;
         this.timeStamp = timeStamp;
         this.id = id;
-        this.numOfLikes = numOfLikes;
-        this.numOfComments = numOfComments;
+
     }
 
 
@@ -126,19 +123,5 @@ public class ActivityItemModel extends BaseObservable {
         this.id = id;
     }
 
-    public int getNumOfLikes() {
-        return numOfLikes;
-    }
 
-    public void setNumOfLikes(int numOfLikes) {
-        this.numOfLikes = numOfLikes;
-    }
-
-    public int getNumOfComments() {
-        return numOfComments;
-    }
-
-    public void setNumOfComments(int numOfComments) {
-        this.numOfComments = numOfComments;
-    }
 }

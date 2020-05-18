@@ -169,9 +169,7 @@ public class AddDesignOrStyleActivity extends AppCompatActivity {
                     itemsMap.put("userName", userName);
                     itemsMap.put("timeStamp", GetTimeAgo.getTimeInMillis());
                     itemsMap.put("accountType", accountType);
-                    itemsMap.put("numOfLikes", 0);
-                    itemsMap.put("numOfComments", 0);
-                    //itemsMap.put("id", documentId);
+
 
                     String randomUID = serviceTypeDbRef.push().getKey();
                     assert randomUID != null;

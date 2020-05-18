@@ -260,6 +260,8 @@
     <string name="welcome">Welcome to Qwik Home Services</string>
     <string name="wkDone">Work is done</string>
     <string name="wkNtDone">Work is not done</string>
+    <string name="admobBanner">ca-app-pub-7358181102198543/4048024942</string>
+    <string name="admobInterstitial">ca-app-pub-7358181102198543/6527042145</string>
 
 
     <string name="termAndConditions">
