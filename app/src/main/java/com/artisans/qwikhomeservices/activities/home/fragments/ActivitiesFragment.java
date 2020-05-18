@@ -23,6 +23,8 @@ import com.artisans.qwikhomeservices.activities.home.bottomsheets.AddStatusToFir
 import com.artisans.qwikhomeservices.adapters.MultiViewTypeAdapter;
 import com.artisans.qwikhomeservices.databinding.FragmentActivitiesBinding;
 import com.artisans.qwikhomeservices.models.ActivityItemModel;
+import com.artisans.qwikhomeservices.utils.Admob;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -47,6 +49,9 @@ public class ActivitiesFragment extends Fragment {
     private LinearLayoutManager layoutManager;
     private Parcelable mState;
     private ListenerRegistration registration;
+    public View view;
+    private AdView adView;
+
 
     public ActivitiesFragment() {
         // Required empty public constructor
@@ -75,6 +80,7 @@ public class ActivitiesFragment extends Fragment {
 
         loadActivityData();
         requireActivity().runOnUiThread(this::fetchDataFromFireStore);
+        showBanner();
 
     }
 
@@ -220,6 +226,19 @@ public class ActivitiesFragment extends Fragment {
             }
 
         });*/
+    }
+
+    private void showBanner() {
+        //   --- Admob ---
+        view = requireActivity().getWindow().getDecorView().getRootView();
+
+        Admob.createLoadBanner(requireActivity(), view);
+        Admob.createLoadInterstitial(requireActivity(), null);
+        //   --- *** ---
+
+      /*  adView = fragmentHomeBinding.adView;
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);*/
     }
 
 

@@ -70,6 +70,12 @@ public class Admob {
 
     public static void loadInterstitial() {
 
+        List<String> testDeviceIds = Collections.singletonList("ca-app-pub-7358181102198543/4048024942");
+        RequestConfiguration configuration =
+                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+        MobileAds.setRequestConfiguration(configuration);
+
+
         mInterstitial.loadAd(new AdRequest.Builder().build());
 
                /* addTestDevice("ca-app-pub-3940256099942544/1033173712").//ca-app-pub-3940256099942544/1033173712
