@@ -79,6 +79,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         ActivityItemModel object = dataSet.get(listPosition);
         if (object != null) {
+
             switch (object.type) {
                 case ActivityItemModel.TEXT_TYPE:
 
@@ -93,6 +94,28 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
                             .error(((TextTypeViewHolder) holder).textTypeBinding.getRoot().getResources().getDrawable(R.drawable.photoe))
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(((TextTypeViewHolder) holder).textTypeBinding.imgUserPhoto);
+
+                    ((TextTypeViewHolder) holder).isLiked(object.getId(), ((TextTypeViewHolder) holder).imgBtnLike);
+
+                    ((TextTypeViewHolder) holder).numOfLikes(((TextTypeViewHolder) holder).txtLikes, object.getId());
+
+                    ((TextTypeViewHolder) holder).imgBtnLike.setOnClickListener(v -> {
+                        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                                .getReference()
+                                .child("Likes")
+                                .child(object.getId())
+                                .child(uid);
+
+                        if (((TextTypeViewHolder) holder).imgBtnLike.getTag().equals("like")) {
+
+                            dbRef.setValue(true);
+
+                        } else {
+
+                            dbRef.removeValue();
+                        }
+                    });
+
 
                     break;
                 case ActivityItemModel.IMAGE_TYPE:
@@ -135,7 +158,6 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
                             .into((((ImageTypeViewHolder) holder).imageTypeBinding.imgContentPhoto));
 
                     ((ImageTypeViewHolder) holder).isLiked(object.getId(), ((ImageTypeViewHolder) holder).imgBtnLike);
-
 
                     ((ImageTypeViewHolder) holder).numOfLikes(((ImageTypeViewHolder) holder).txtLikes, object.getId());
 
@@ -192,12 +214,78 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
     //view holder for text
     static class TextTypeViewHolder extends RecyclerView.ViewHolder {
         TextTypeBinding textTypeBinding;
+        ImageView imgBtnLike;
+        TextView txtLikes;
+
 
         TextTypeViewHolder(@NonNull TextTypeBinding textTypeBinding) {
             super(textTypeBinding.getRoot());
             this.textTypeBinding = textTypeBinding;
+            imgBtnLike = textTypeBinding.imgBtnLike;
+            txtLikes = textTypeBinding.txtLikes;
 
         }
+
+
+        /***
+         * method to check if an item is liked or not
+         * @param imgBtnLike image to switch between item liked by changing image item
+         * @param postId the post id for the item in the view holder
+         * **/
+        private void isLiked(String postId, ImageView imgBtnLike) {
+            String uid = MainActivity.uid;
+
+            DatabaseReference likesDbRef = FirebaseDatabase.getInstance()
+                    .getReference().child("Likes").child(postId);
+
+
+            likesDbRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.child(uid).exists()) {
+
+                        imgBtnLike.setImageResource(R.drawable.ic_favorite_red);
+                        imgBtnLike.setTag("liked");
+                    } else {
+                        imgBtnLike.setImageResource(R.drawable.ic_favorite);
+                        imgBtnLike.setTag("like");
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+        }
+
+        /***
+         * method to display the number of likes
+         * @param txtIsLiked TextView to hold the counter
+         * @param postId the post id for the item in the view holder
+         * **/
+        private void numOfLikes(TextView txtIsLiked, String postId) {
+            DatabaseReference likesDbRef = FirebaseDatabase.getInstance()
+                    .getReference().child("Likes").child(postId);
+
+            likesDbRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    txtIsLiked.setText(MessageFormat.format("{0} likes", dataSnapshot.getChildrenCount()));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+
 
     }
 
@@ -275,6 +363,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
             });
 
         }
+
 
     }
 
