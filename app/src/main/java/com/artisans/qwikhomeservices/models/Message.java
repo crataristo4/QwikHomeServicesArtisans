@@ -20,9 +20,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Message extends BaseObservable {
     private String senderId, receiverId;
-    private String senderName, receiverName;
+    public String senderName, receiverName;
     private String senderPhoto, receiverPhoto;
-    private String messageDateTime;
+    public String messageDateTime;
     private String message;
     public static final int ITEM_TYPE_SENT = 0;
     public static final int ITEM_TYPE_RECEIVED = 1;
