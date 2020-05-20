@@ -149,6 +149,7 @@
 
         <activity android:name=".activities.handymanactivity.RequestHandyManActivity" />
         <activity android:name=".activities.home.bottomsheets.AddPhoneNumberActivity" />
+        <activity android:name=".activities.home.serviceTypes.CommentsActivity" />
     </application>
 
 </manifest>

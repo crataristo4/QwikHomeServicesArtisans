@@ -1,6 +1,7 @@
 package com.artisans.qwikhomeservices.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.artisans.qwikhomeservices.R;
 import com.artisans.qwikhomeservices.activities.home.MainActivity;
+import com.artisans.qwikhomeservices.activities.home.serviceTypes.CommentsActivity;
 import com.artisans.qwikhomeservices.databinding.ImageTypeBinding;
 import com.artisans.qwikhomeservices.databinding.TextTypeBinding;
 import com.artisans.qwikhomeservices.models.ActivityItemModel;
@@ -161,6 +163,20 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                     ((ImageTypeViewHolder) holder).numOfLikes(((ImageTypeViewHolder) holder).txtLikes, object.getId());
 
+                    ((ImageTypeViewHolder) holder).numOfComments(((ImageTypeViewHolder) holder).txtComments, object.getId());
+
+                    ((ImageTypeViewHolder) holder).txtComments.setOnClickListener(view -> {
+
+                        Intent commentsIntent = new Intent(view.getContext(), CommentsActivity.class);
+                        commentsIntent.putExtra("postId", object.getId());
+                        commentsIntent.putExtra("itemImage", object.getItemImage());
+                        commentsIntent.putExtra("itemDescription", object.getItemDescription());
+
+                        view.getContext().startActivity(commentsIntent);
+
+
+                    });
+
                     ((ImageTypeViewHolder) holder).imageView.setOnClickListener(new DoubleClickListener() {
                         @Override
                         public void onDoubleClick(View view) {
@@ -293,7 +309,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
     static class ImageTypeViewHolder extends RecyclerView.ViewHolder {
         ImageTypeBinding imageTypeBinding;
         ImageView imageView, imgBtnLike;
-        TextView txtLikes;
+        TextView txtLikes, txtComments;
 
         ImageTypeViewHolder(@NonNull ImageTypeBinding imageTypeBinding) {
             super(imageTypeBinding.getRoot());
@@ -301,6 +317,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
             imageView = imageTypeBinding.imgContentPhoto;
             txtLikes = imageTypeBinding.txtLikes;
             imgBtnLike = imageTypeBinding.imgBtnLike;
+            txtComments = imageTypeBinding.txtComments;
 
 
         }
@@ -363,6 +380,27 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
             });
 
         }
+
+
+        private void numOfComments(TextView txtComments, String postId) {
+            DatabaseReference likesDbRef = FirebaseDatabase.getInstance()
+                    .getReference().child("Comments").child(postId);
+
+            likesDbRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    txtComments.setText(MessageFormat.format("{0} Comments", dataSnapshot.getChildrenCount()));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+
 
 
     }

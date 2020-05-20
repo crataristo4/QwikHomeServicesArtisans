@@ -146,9 +146,9 @@ public class ActivitiesFragment extends Fragment {
             arrayList.clear();
             assert queryDocumentSnapshots != null;
             for (QueryDocumentSnapshot ds : queryDocumentSnapshots) {
-                if (ds != null) {
 
-                    ActivityItemModel itemModel = ds.toObject(ActivityItemModel.class);
+
+                ActivityItemModel itemModel = ds.toObject(ActivityItemModel.class);
                     //get data from model
                     String userName = itemModel.getUserName();
                     String userPhoto = itemModel.getUserPhoto();
@@ -157,7 +157,6 @@ public class ActivitiesFragment extends Fragment {
                     String itemImage = itemModel.getItemImage();
                     long timeStamp = itemModel.getTimeStamp();
                     String id = ds.getId();
-
 //group data by status
                     if (ds.getData().containsKey("status")) {
                         Log.i(TAG, "status: " + ds.getData().get("status"));
@@ -182,7 +181,7 @@ public class ActivitiesFragment extends Fragment {
                         ));
                     }
                 }
-            }
+
             adapter.notifyDataSetChanged();
 
 

@@ -6,7 +6,7 @@
     android:id="@+id/activity_comment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.users.qwikhomeservices.activities.home.serviceTypes.CommentsActivity">
+    tools:context="com.artisans.qwikhomeservices.activities.home.serviceTypes.CommentsActivity">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -22,10 +22,9 @@
         app:title="@string/comments" />
 
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="false"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -33,46 +32,46 @@
         app:layout_constraintTop_toBottomOf="@+id/commentsToolBar">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtItemDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:padding="@dimen/eightDp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgItemImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgItemImage"
+            app:layout_constraintTop_toTopOf="@+id/imgItemImage"
+            app:layout_constraintVertical_bias="0.0" />
 
 
-            <TextView
-                android:id="@+id/txtItemDescription"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/eightDp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/imgItemImage"
+            android:layout_width="79dp"
+            android:layout_height="77dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/comments"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgItemImage" />
 
 
-            <ImageView
-                android:id="@+id/imgItemImage"
-                android:layout_width="0dp"
-                android:layout_height="300dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/comments"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtItemDescription"
-                tools:srcCompat="@tools:sample/avatars" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imgItemImage" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </ScrollView>
 
     <LinearLayout
         android:id="@+id/linearLayout"

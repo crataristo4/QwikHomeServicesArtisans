@@ -9,7 +9,7 @@ public class ActivityItemModel extends BaseObservable {
     public static final int AUDIO_TYPE = 2;
 
     public int type, data;
-    private String id;
+    public String id;
     public String itemImage, itemDescription, userName, userPhoto, status, accountType, price;
     public Object timeStamp;
 
