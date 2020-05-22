@@ -246,7 +246,8 @@ public class DetailsScrollingActivity extends AppCompatActivity {
     @Override
     public boolean onNavigateUp() {
         onBackPressed();
-        return super.onNavigateUp();
+
+        return true;
 
     }
 

@@ -149,7 +149,17 @@
 
         <activity android:name=".activities.handymanactivity.RequestHandyManActivity" />
         <activity android:name=".activities.home.bottomsheets.AddPhoneNumberActivity" />
-        <activity android:name=".activities.home.serviceTypes.CommentsActivity" />
+        <activity
+            android:name=".activities.home.serviceTypes.CommentsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".utils.AppFirebaseInstanceId"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

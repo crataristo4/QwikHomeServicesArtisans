@@ -42,7 +42,6 @@ import java.util.ArrayList;
 
 
 public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private String uid = MainActivity.uid;
     private ArrayList<ActivityItemModel> dataSet;
     private Context mContext;
 
@@ -74,6 +73,8 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int listPosition) {
+        String uid = MainActivity.uid;
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(DisplayViewUI.getRandomDrawableColor());
         requestOptions.error(DisplayViewUI.getRandomDrawableColor());

@@ -28,6 +28,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -96,13 +97,7 @@ public class AboutFragment extends Fragment {
 
     }
 
-    /*private void openGallery() {
-        CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .setAspectRatio(16, 16)
-                .start(Objects.requireNonNull(getContext()), this);
-    }
-*/
+
     private void onClick(View view) {
         TextInputLayout txtAbout = fragmentAboutBinding.txtAbout;
         about = Objects.requireNonNull(txtAbout.getEditText()).getText().toString();
@@ -173,6 +168,7 @@ public class AboutFragment extends Fragment {
 
                     String mobileNumber = MainActivity.firebaseUser.getPhoneNumber();
                     String uid = MainActivity.uid;
+                    String deviceToken = FirebaseInstanceId.getInstance().getToken();
 
                     @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:MM a");
                     String dateJoined = dateFormat.format(Calendar.getInstance().getTime());
@@ -184,7 +180,9 @@ public class AboutFragment extends Fragment {
                             about,
                             mobileNumber,
                             mGetAccountType,
-                            getImageUri, dateJoined);
+                            getImageUri,
+                            dateJoined,
+                            deviceToken);
 
                     serviceTypeDbRef.setValue(servicePerson).addOnCompleteListener(task1 -> {
                         if (task1.isSuccessful()) {

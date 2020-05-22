@@ -36,9 +36,6 @@
             android:id="@+id/txtItemDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
@@ -52,8 +49,8 @@
 
         <ImageView
             android:id="@+id/imgItemImage"
-            android:layout_width="79dp"
-            android:layout_height="77dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/comments"
             app:layout_constraintStart_toStartOf="parent"

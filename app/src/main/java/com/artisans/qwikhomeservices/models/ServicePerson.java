@@ -45,13 +45,15 @@ public class ServicePerson extends BaseObservable {
     public long timeStamp;
     public String joinedDate;
     private String userId;
+    private String deviceToken;
 
 
     public ServicePerson() {
     }
 
     public ServicePerson(String servicePersonId, String firstName, String lastName, String fullName,
-                         String about, String mobileNumber, String accountType, String image, String joinedDate) {
+                         String about, String mobileNumber, String accountType, String image,
+                         String joinedDate, String deviceToken) {
         this.servicePersonId = servicePersonId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -61,6 +63,7 @@ public class ServicePerson extends BaseObservable {
         this.accountType = accountType;
         this.image = image;
         this.joinedDate = joinedDate;
+        this.deviceToken = deviceToken;
     }
 
     public ServicePerson(String servicePersonId, String name, String email, String accountType) {
@@ -347,5 +350,9 @@ public class ServicePerson extends BaseObservable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
     }
 }

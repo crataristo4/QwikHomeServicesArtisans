@@ -159,4 +159,9 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
