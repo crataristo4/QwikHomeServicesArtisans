@@ -6,7 +6,8 @@ import androidx.databinding.Bindable;
 public class ActivityItemModel extends BaseObservable {
     public static final int TEXT_TYPE = 0;
     public static final int IMAGE_TYPE = 1;
-    public static final int AUDIO_TYPE = 2;
+    public static final int VIEW_TYPE_LOADING = 2;
+    public static final int AUDIO_TYPE = 3;
 
     public int type, data;
     public String id;

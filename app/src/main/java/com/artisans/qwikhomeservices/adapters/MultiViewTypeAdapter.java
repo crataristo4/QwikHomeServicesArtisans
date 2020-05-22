@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.artisans.qwikhomeservices.R;
 import com.artisans.qwikhomeservices.activities.home.MainActivity;
 import com.artisans.qwikhomeservices.activities.home.serviceTypes.CommentsActivity;
 import com.artisans.qwikhomeservices.databinding.ImageTypeBinding;
+import com.artisans.qwikhomeservices.databinding.ItemLoadingBinding;
 import com.artisans.qwikhomeservices.databinding.TextTypeBinding;
 import com.artisans.qwikhomeservices.models.ActivityItemModel;
 import com.artisans.qwikhomeservices.utils.DisplayViewUI;
@@ -64,6 +66,10 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
             case ActivityItemModel.IMAGE_TYPE:
 
                 return new ImageTypeViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.image_type, parent, false));
+
+            case ActivityItemModel.VIEW_TYPE_LOADING:
+
+                return new LoadingViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_loading, parent, false));
 
         }
         return null;
@@ -201,6 +207,11 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                     break;
 
+                case ActivityItemModel.VIEW_TYPE_LOADING:
+                    showLoadingView((LoadingViewHolder) holder, listPosition);
+                    break;
+
+
             }
         }
 
@@ -215,9 +226,10 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
             case 1:
                 return ActivityItemModel.IMAGE_TYPE;
             case 2:
-                return ActivityItemModel.AUDIO_TYPE;
+                return ActivityItemModel.VIEW_TYPE_LOADING;
             default:
                 return -1;
+
         }
 
 
@@ -303,6 +315,11 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         }
 
+
+    }
+
+    private void showLoadingView(LoadingViewHolder viewHolder, int position) {
+        //ProgressBar would be displayed
 
     }
 
@@ -403,8 +420,20 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
 
-
     }
 
+    //loading view holder
+    static class LoadingViewHolder extends RecyclerView.ViewHolder {
+
+        ProgressBar progressBar;
+        ItemLoadingBinding itemLoadingBinding;
+
+        LoadingViewHolder(@NonNull ItemLoadingBinding itemLoadingBinding) {
+            super(itemLoadingBinding.getRoot());
+            this.itemLoadingBinding = itemLoadingBinding;
+
+            progressBar = itemLoadingBinding.progressBar;
+        }
+    }
 
 }

@@ -108,7 +108,7 @@ public class AddStatusToFireStore extends BottomSheetDialogFragment {
                         dismiss();
                         loading.setVisibility(View.GONE);
                         txtStatus.getEditText().getText().clear();
-                        DisplayViewUI.displayToast(requireActivity(), "Successful");
+                        //  DisplayViewUI.displayToast(requireActivity(), "Successful");
                     } else {
                         loading.setVisibility(View.GONE);
                         DisplayViewUI.displayToast(requireActivity(), Objects.requireNonNull(task.getException()).getMessage());
