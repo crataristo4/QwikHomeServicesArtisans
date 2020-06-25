@@ -207,11 +207,6 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                     break;
 
-                case ActivityItemModel.VIEW_TYPE_LOADING:
-                    showLoadingView((LoadingViewHolder) holder, listPosition);
-                    break;
-
-
             }
         }
 
@@ -225,8 +220,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
                 return ActivityItemModel.TEXT_TYPE;
             case 1:
                 return ActivityItemModel.IMAGE_TYPE;
-            case 2:
-                return ActivityItemModel.VIEW_TYPE_LOADING;
+          
             default:
                 return -1;
 

@@ -173,6 +173,7 @@
                 android:prompt="@string/accountType"
                 android:saveEnabled="true"
                 android:spinnerMode="dialog"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="@+id/txtEmailLayout"
                 app:layout_constraintStart_toStartOf="@+id/txtEmailLayout"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -183,6 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/accountType"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="@+id/txtEmailLayout"
                 app:layout_constraintStart_toStartOf="@+id/txtEmailLayout"
                 app:layout_constraintTop_toBottomOf="@+id/txtEmailLayout" />

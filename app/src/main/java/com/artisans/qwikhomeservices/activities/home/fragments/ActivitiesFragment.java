@@ -41,7 +41,7 @@ public class ActivitiesFragment extends Fragment {
 
     private static final String KEY = "key";
     private static final String TAG = "ActivityFragment";
-    private static final int INITIAL_LOAD = 4;
+    private static final int INITIAL_LOAD = 15;
     private Bundle mBundleState;
     private boolean userScrolled = false;
     private int currentPage = 1;
@@ -63,12 +63,6 @@ public class ActivitiesFragment extends Fragment {
 
     public ActivitiesFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     @Override
@@ -113,7 +107,7 @@ public class ActivitiesFragment extends Fragment {
 
         fragmentActivitiesBinding.addItem.setOnClickListener(v -> startActivity(new Intent(getContext(), AddDesignOrStyleActivity.class)));
 
-        implementScrollListener();
+        //implementScrollListener();
 
     }
 
